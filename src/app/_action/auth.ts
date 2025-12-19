@@ -64,3 +64,33 @@ export async function loginAction(
     return { success: false, message:  "unexpected error occur" };
   }
 }
+
+export async function getAuthUser() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("accessToken")?.value;
+  console.log(token)
+
+  if (!token) return "null";
+
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/user/me`,
+      {
+        method: "GET",
+        headers: {
+          Cookie: `accessToken=${token}`,
+        },
+        cache: "no-store",
+      }
+    );
+    // console.log(res)
+
+    if (!res.ok) return null;
+
+    const data = await res.json();
+    // console.log(data.data.user)
+    return data.data.user;
+  } catch {
+    return null;
+  }
+}

@@ -1,3 +1,4 @@
+import { logoutAction } from "@/app/_action/logoutAction";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -10,6 +11,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import Link from "next/link";
+import LogoutButton from "../page/LogoutButton";
+import { getAuthUser } from "@/app/_action/auth";
 
 const navigationLinks = [
   { href: "/", label: "Home" },
@@ -21,7 +24,10 @@ const navigationLinks = [
   { href: "/blogs", label: "Blogs" },
 ];
 
-export default function Navbar() {
+export default async function  Navbar() {
+
+  const user = await getAuthUser()
+
   return (
     <header className="w-full sticky top-0 z-50 border-b bg-white dark:bg-gray-900 h-20">
       <div className="mx-auto flex h-16 items-center justify-between gap-4">
@@ -105,6 +111,7 @@ export default function Navbar() {
           {/* Auth Buttons (Static) */}
           <Link href="/login">
             <Button className="text-sm font-semibold px-5">Login</Button>
+            <LogoutButton/>
           </Link>
         </div>
       </div>
