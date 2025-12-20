@@ -9,8 +9,6 @@ interface ActionButtonProps {
 
 export default function ActionButton({ children }: ActionButtonProps) {
   const { pending } = useFormStatus();
-  
-  console.log("🔘 Button pending state:", pending);
 
   return (
     <Button 

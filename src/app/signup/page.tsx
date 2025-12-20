@@ -8,6 +8,7 @@ import {
   CardFooter,
 } from "@/components/ui/card"
 import SignupForm from "@/components/page/signup/SignupForm"
+import RegisterForm from "@/components/page/signup/SignupForm"
 
 
 export default function Page() {
