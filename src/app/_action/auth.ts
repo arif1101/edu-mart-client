@@ -68,9 +68,8 @@ export async function loginAction(
 export async function getAuthUser() {
   const cookieStore = await cookies();
   const token = cookieStore.get("accessToken")?.value;
-  console.log(token)
 
-  if (!token) return "null";
+  if (!token) return null;
 
   try {
     const res = await fetch(
@@ -83,12 +82,10 @@ export async function getAuthUser() {
         cache: "no-store",
       }
     );
-    // console.log(res)
 
     if (!res.ok) return null;
 
     const data = await res.json();
-    // console.log(data.data.user)
     return data.data.user;
   } catch {
     return null;

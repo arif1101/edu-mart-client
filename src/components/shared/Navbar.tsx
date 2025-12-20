@@ -13,6 +13,8 @@ import {
 import Link from "next/link";
 import LogoutButton from "../page/LogoutButton";
 import { getAuthUser } from "@/app/_action/auth";
+import { unstable_noStore as noStore } from "next/cache";
+
 
 const navigationLinks = [
   { href: "/", label: "Home" },
@@ -24,9 +26,11 @@ const navigationLinks = [
   { href: "/blogs", label: "Blogs" },
 ];
 
-export default async function  Navbar() {
+export default async function Navbar() {
 
-  const user = await getAuthUser()
+  noStore()
+  const user = await getAuthUser();
+  console.log("----",user); // null
 
   return (
     <header className="w-full sticky top-0 z-50 border-b bg-white dark:bg-gray-900 h-20">
@@ -105,14 +109,17 @@ export default async function  Navbar() {
             <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500 text-white font-bold">
               M
             </div>
-            <span className="font-semibold text-gray-700">User Name</span>
+            <span className="font-semibold text-gray-700">{user?.name}</span>
           </div>
 
           {/* Auth Buttons (Static) */}
-          <Link href="/login">
-            <Button className="text-sm font-semibold px-5">Login</Button>
-            <LogoutButton/>
-          </Link>
+          {user ? (
+            <LogoutButton />
+          ) : (
+            <Link href="/login">
+              <Button className="text-sm font-semibold px-5">Login</Button>
+            </Link>
+          )}
         </div>
       </div>
     </header>
