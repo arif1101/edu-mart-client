@@ -1,3 +1,4 @@
+import Footer from "@/components/shared/Footer";
 import Navbar from "@/components/shared/Navbar";
 
 export default function CommonLayout({
@@ -6,9 +7,10 @@ export default function CommonLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="mx-auto container">
+    <div className="">
       <Navbar />
       {children}
+      <Footer/>
     </div>
   );
 }
