@@ -6,7 +6,7 @@ import { ArrowRight, Play } from "lucide-react";
 
 export default function Hero() {
   return (
-    <div className="flex flex-col lg:flex-row gap-10 lg:gap-5 px-4 my-25">
+    <div className="flex flex-col lg:flex-row gap-10 lg:gap-5 px-4 mt-25">
       {/* description section */}
       <div className="w-full lg:max-w-154.5 pr-0 lg:pr-6 flex flex-col gap-6 text-center lg:text-left">
         <h1 className="text-[36px] md:text-[48px] lg:text-[72px] font-bold leading-tight">
