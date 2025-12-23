@@ -1,13 +1,13 @@
 // components/page/home/PopularCourses.tsx
 import Link from "next/link";
-import CourseCard from "./CourseCard";
+import CourseCard from "../course/CourseCard";
+import { Course } from "@/types/course";
 
 interface Props {
   courses: Course[];
 }
 
 export default function PopularCourses({ courses }: Props) {
-    
   return (
     <div className="p-6 mt-24 flex flex-col gap-6 lg:gap-10">
       {/* Header */}
@@ -19,19 +19,24 @@ export default function PopularCourses({ courses }: Props) {
         <div className="flex flex-wrap justify-between items-center gap-4">
           {/* Categories */}
           <div className="flex flex-wrap gap-3">
-            {["All", "Web Design", "Business", "Development", "Mobile App", "Accounting"].map(
-              (category) => (
-                <button
-                  key={category}
-                  className="px-4 py-2 rounded-full border border-gray-400 
+            {[
+              "All",
+              "Web Design",
+              "Business",
+              "Development",
+              "Mobile App",
+              "Accounting",
+            ].map((category) => (
+              <button
+                key={category}
+                className="px-4 py-2 rounded-full border border-gray-400 
                   bg-gradient-to-r from-white to-sky-100 
                   hover:from-sky-100 hover:to-sky-300
                   transition-all duration-300 font-semibold"
-                >
-                  {category}
-                </button>
-              )
-            )}
+              >
+                {category}
+              </button>
+            ))}
           </div>
 
           {/* More Courses */}
@@ -46,7 +51,7 @@ export default function PopularCourses({ courses }: Props) {
       {/* Courses Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {courses.length > 0 ? (
-          courses.map((course,index) => (
+          courses.map((course, index) => (
             <CourseCard key={index} {...course} layout="grid" />
           ))
         ) : (
