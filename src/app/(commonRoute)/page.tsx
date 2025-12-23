@@ -1,6 +1,7 @@
 import PopularCourses from "@/components/page/course/PopularCourses";
 import FindCourseForm from "@/components/page/home/FindCourseForm";
 import Hero from "@/components/page/home/hero";
+import MeetMyTeam from "@/components/page/home/MeetMyTeam";
 import PopularTopics from "@/components/page/home/PopularTopics";
 import { Button } from "@/components/ui/button";
 import { getCourses } from "@/lib/course";
@@ -17,6 +18,7 @@ export default async function Home() {
       <FindCourseForm/>
       <PopularTopics/>
       <PopularCourses courses={courses.data} />
+      <MeetMyTeam/>
     </div>
   );
 }
