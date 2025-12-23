@@ -1,11 +1,10 @@
 import PopularCourses from "@/components/page/course/PopularCourses";
+import FeatureSection from "@/components/page/home/FeatureSection";
 import FindCourseForm from "@/components/page/home/FindCourseForm";
 import Hero from "@/components/page/home/hero";
 import MeetMyTeam from "@/components/page/home/MeetMyTeam";
 import PopularTopics from "@/components/page/home/PopularTopics";
-import { Button } from "@/components/ui/button";
 import { getCourses } from "@/lib/course";
-import Image from "next/image";
 
 export default async function Home() {
 
@@ -19,6 +18,7 @@ export default async function Home() {
       <PopularTopics/>
       <PopularCourses courses={courses.data} />
       <MeetMyTeam/>
+      <FeatureSection/>
     </div>
   );
 }
