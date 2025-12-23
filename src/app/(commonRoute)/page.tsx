@@ -7,6 +7,7 @@ import PopularTopics from "@/components/page/home/PopularTopics";
 import { getCourses } from "@/lib/course";
 import { getBooks } from "@/lib/book";
 import PopularBooks from "@/components/page/home/PopularBooks";
+import Testimonials from "@/components/page/home/Testimonials";
 
 export default async function Home() {
   const courses = await getCourses();
@@ -22,6 +23,7 @@ export default async function Home() {
       <MeetMyTeam />
       <FeatureSection />
       <PopularBooks books={books.data}/>
+      <Testimonials/>
     </div>
   );
 }
