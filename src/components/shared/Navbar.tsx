@@ -20,17 +20,17 @@ const navigationLinks = [
   { href: "/", label: "Home" },
   { href: "/courses", label: "Courses" },
   { href: "/books", label: "Books" },
-  { href: "/exams", label: "Exams" },
   { href: "/forum", label: "Forum" },
   { href: "/resources", label: "Resources" },
   { href: "/blogs", label: "Blogs" },
+  { href: "/about", label: "About us" },
 ];
 
 export default async function Navbar() {
 
   noStore()
   const user = await getAuthUser();
-  console.log("----",user); // null
+  console.log("----",user);
 
   return (
     <header className="container mx-auto w-full sticky top-0 z-50 border-b bg-white dark:bg-gray-900 ">
