@@ -10,6 +10,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { useRouter } from "next/navigation";
 
 const BLOGS_PER_PAGE = 6;
 
@@ -17,6 +18,7 @@ const blogs = [
   {
     id: 1,
     title: "The Future of Online Learning",
+    slug: "future-of-online-learning-1",
     excerpt: "Explore how AI and personalization are reshaping education.",
     image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f",
     category: "EdTech",
@@ -25,6 +27,7 @@ const blogs = [
   {
     id: 2,
     title: "How Students Learn Faster with Technology",
+    slug: "how-students-learn-faster-with-technology-1",
     excerpt: "Modern tools help students retain knowledge better.",
     image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b",
     category: "Learning",
@@ -33,14 +36,16 @@ const blogs = [
   {
     id: 3,
     title: "Best Practices for Online Courses",
+    slug: "best-practices-for-online-courses-1",
     excerpt: "Design engaging courses with higher completion rates.",
     image: "https://images.unsplash.com/photo-1584697964403-3b47f0f3f1a4",
     category: "Courses",
     date: "March 8, 2025",
   },
-    {
+  {
     id: 11,
     title: "The Future of Online Learning",
+    slug: "future-of-online-learning-2",
     excerpt: "Explore how AI and personalization are reshaping education.",
     image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f",
     category: "EdTech",
@@ -49,6 +54,7 @@ const blogs = [
   {
     id: 12,
     title: "How Students Learn Faster with Technology",
+    slug: "how-students-learn-faster-with-technology-2",
     excerpt: "Modern tools help students retain knowledge better.",
     image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b",
     category: "Learning",
@@ -57,14 +63,16 @@ const blogs = [
   {
     id: 13,
     title: "Best Practices for Online Courses",
+    slug: "best-practices-for-online-courses-2",
     excerpt: "Design engaging courses with higher completion rates.",
     image: "https://images.unsplash.com/photo-1584697964403-3b47f0f3f1a4",
     category: "Courses",
     date: "March 8, 2025",
   },
-    {
+  {
     id: 21,
     title: "The Future of Online Learning",
+    slug: "future-of-online-learning-3",
     excerpt: "Explore how AI and personalization are reshaping education.",
     image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f",
     category: "EdTech",
@@ -73,6 +81,7 @@ const blogs = [
   {
     id: 22,
     title: "How Students Learn Faster with Technology",
+    slug: "how-students-learn-faster-with-technology-3",
     excerpt: "Modern tools help students retain knowledge better.",
     image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b",
     category: "Learning",
@@ -81,6 +90,7 @@ const blogs = [
   {
     id: 23,
     title: "Best Practices for Online Courses",
+    slug: "best-practices-for-online-courses-3",
     excerpt: "Design engaging courses with higher completion rates.",
     image: "https://images.unsplash.com/photo-1584697964403-3b47f0f3f1a4",
     category: "Courses",
@@ -88,9 +98,12 @@ const blogs = [
   },
 ];
 
+
 const categories = ["All", "EdTech", "Learning", "Courses"];
 
 export default function Blogs() {
+  const router = useRouter();
+
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -149,7 +162,8 @@ export default function Blogs() {
         {paginatedBlogs.map((blog) => (
           <article
             key={blog.id}
-            className="bg-white rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition"
+            onClick={() => router.push(`/blogs/${blog.slug}`)}
+            className="cursor-pointer bg-white rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition"
           >
             <div className="relative h-48 w-full overflow-hidden rounded-t-xl">
               <img
@@ -173,9 +187,7 @@ export default function Blogs() {
               </p>
 
               <div className="mt-5 flex justify-between items-center">
-                <span className="text-xs text-slate-400">
-                  {blog.date}
-                </span>
+                <span className="text-xs text-slate-400">{blog.date}</span>
                 <button className="text-sm font-medium text-sky-500 hover:text-sky-600">
                   Read More →
                 </button>
@@ -192,9 +204,7 @@ export default function Blogs() {
             <PaginationContent>
               <PaginationItem>
                 <PaginationPrevious
-                  onClick={() =>
-                    setCurrentPage((p) => Math.max(p - 1, 1))
-                  }
+                  onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
                 />
               </PaginationItem>
 
