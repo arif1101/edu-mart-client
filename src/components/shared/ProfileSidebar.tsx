@@ -39,7 +39,7 @@ export default function ProfileSidebar({
   const navigation = [
     { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
     { label: "Cart", href: "/cart", icon: ShoppingCart },
-    { label: "My Profile", href: "/profile", icon: User },
+    { label: "My Profile", href: "/user-profile", icon: User },
     { label: "Enrolled Courses", href: "/courses/enrolled", icon: BookOpen },
     { label: "Purchased Books", href: "/books/purchased", icon: Book },
     { label: "Saved Resources", href: "/resources/saved", icon: FileText },
