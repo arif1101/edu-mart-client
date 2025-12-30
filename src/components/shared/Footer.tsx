@@ -13,7 +13,7 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="py-16 mt-25 bg-black text-white">
+    <footer className="py-16 bg-black text-white">
       <div className="container md:flex bg-sky-500 px-6 py-8 mb-16 mx-auto rounded-lg gap-6 sm:p-10">
         {/* Title Section */}
         <div className="mb-6 my-auto">
