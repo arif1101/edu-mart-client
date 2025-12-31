@@ -12,6 +12,7 @@ export async function getCourses() {
 
 // course.ts
 export async function getSingleCourse(id: string) {
+  console.log("--------checking for sngle course-------:", id)
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/courses/${id}`,
     { cache: "no-store" }
