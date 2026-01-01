@@ -12,7 +12,7 @@ import Testimonials from "@/components/page/home/Testimonials";
 export default async function Home() {
   const courses = await getCourses();
   const books = await getBooks();
-  console.log("From home Books :", courses.data);
+  // console.log("From home Books :", courses.data);
 
   return (
     <div className="container mx-auto">

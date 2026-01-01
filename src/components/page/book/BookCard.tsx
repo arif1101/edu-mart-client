@@ -1,6 +1,5 @@
 import { Book } from '@/types/book'
 import Link from 'next/link'
-import React from 'react'
 
 interface Props {
   book: Book
@@ -20,6 +19,7 @@ export default function BookCard({ book }: Props) {
   } = book
 
   const price = copyType === 'Hardcopy' ? hardPrice : softPrice
+  console.log("-----from book card------:", _id, title, author, rating, copyType)
 
   return (
     <Link href={`/books/${_id}`}>

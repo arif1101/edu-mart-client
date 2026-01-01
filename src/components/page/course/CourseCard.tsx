@@ -1,88 +1,144 @@
-import Image from "next/image";
-import { ArrowRight, Clock, Dock, Play } from "lucide-react";
+"use client";
 
-interface CourseCardProps {
-  thumbnail: string;
+import { Book, Network, Timer, TimerIcon, User } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
+import CardRating from "@/components/ui/CardRating";
+
+type CourseCardProps = {
+  _id: string;
   title: string;
-  description: string;
-  videos: number;
-  hours: number;
-  lessons: number;
-  fees: number;
-  rating: number;
-}
+  level: string;
+  instructor?: { name: string; photo?: string; status?: string };
+  duration?: number;
+  price?: number;
+  averageRating?: number;
+  layout: "grid" | "list";
+  thumbnail?: string;
+};
 
 export default function CourseCard({
-  thumbnail,
+  _id,
+  averageRating,
   title,
-  description,
-  videos,
-  hours,
-  lessons,
-  fees,
-  rating,
+  level,
+  instructor,
+  duration,
+  price,
+  layout,
+  thumbnail,
 }: CourseCardProps) {
+
+    console.log("----title-------",title, averageRating, level, instructor)//undefine
+
+    
+    
   return (
-    <div className="max-w-sm rounded-2xl shadow-lg bg-white p-4 dark:bg-black">
-      {/* Thumbnail */}
-      <div className="relative w-full h-40">
-        <Image
-          src={thumbnail}
-          alt={title}
-          fill
-          className="object-cover rounded-lg"
-          sizes="(max-width: 768px) 100vw, 33vw"
-        />
+    <Link href={`/courses/${_id}`} className="block">
+      <div
+        className={
+          layout === "grid"
+            ? "max-w-[290px] w-full bg-white rounded-xl"
+            : "max-w-[918px] w-full shadow bg-white rounded-lg flex"
+        }
+      >
+        {layout === "grid" ? (
+          <>
+            {/* Thumbnail */}
+            <div className="relative h-[181.75px] w-full">
+              <Image
+                src={thumbnail || "/placeholder.jpg"}
+                alt={title}
+                fill
+                className="object-cover rounded-t-xl"
+              />
+              <p className="absolute top-2 left-2 bg-sky-500 text-white text-xs md:text-sm font-semibold px-2 py-1 rounded">
+                {level}
+              </p>
+            </div>
+
+            {/* Content */}
+            <div className="p-4 dark:bg-black dark:border">
+              <h1 className="mb-2 md:mb-6 text-lg font-semibold truncate">
+                {title}
+              </h1>
+
+              <div className="text-sm flex flex-col gap-2">
+                <div className="flex items-center gap-1">
+                  <User className="w-3.5" />
+                  <p>{instructor?.name}</p>
+                </div>
+
+                <div className="flex justify-between">
+                  <div className="flex items-center gap-1">
+                    <TimerIcon className="w-3.5" />
+                    <p>{duration}h</p>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Book className="w-3.5" />
+                    <p>46 lectures</p>
+                  </div>
+                </div>
+
+                <div className="flex justify-between">
+                  <CardRating />
+                  <h1 className="text-sky-500">{averageRating} TK</h1>
+                </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            {/* List Thumbnail */}
+            <div className="relative h-[255px] w-[440px]">
+              <Image
+                src={thumbnail || "/placeholder.jpg"}
+                alt={title}
+                fill
+                className="object-cover rounded-l-xl"
+              />
+            </div>
+
+            {/* List Content */}
+            <div className="p-4 w-full flex flex-col justify-between dark:bg-black border-2 rounded-r-md">
+              <div>
+                <h1 className="text-lg font-semibold truncate">{title}</h1>
+
+                <div className="flex justify-between w-[200px]">
+                  <div className="flex items-center gap-1">
+                    <Timer className="w-3.5" />
+                    <p>{duration}h</p>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Network className="w-3.5" />
+                    <p>{level}</p>
+                  </div>
+                </div>
+
+                <div className="flex max-w-[400px] items-center gap-4">
+                  <CardRating />
+                  <div className="flex items-center gap-1">
+                    <Book className="w-3.5" />
+                    <p>46 lectures</p>
+                  </div>
+                </div>
+              </div>
+
+              <p className="line-clamp-2">
+                Hands-on data science with Python.
+              </p>
+
+              <div className="flex justify-between items-center text-sm">
+                <div className="flex items-center gap-1">
+                  <User className="w-3.5" />
+                  <p>{instructor?.name}</p>
+                </div>
+                <h1 className="text-sky-500">{price} TK</h1>
+              </div>
+            </div>
+          </>
+        )}
       </div>
-
-      <div className="mt-4">
-        {/* Rating */}
-        <div className="flex items-center gap-2 text-lg text-sky-500 font-semibold">
-          <span>{rating}</span>
-        </div>
-
-        {/* Title */}
-        <h2 className="text-2xl font-semibold truncate mt-2 min-h-[2.5em]">
-          {title}
-        </h2>
-
-        {/* Description */}
-        <p className="text-gray-500 dark:text-gray-400 text-sm line-clamp-2 min-h-[2.5em] mb-5">
-          {description}
-        </p>
-
-        {/* Meta Info */}
-        <div className="flex justify-between items-center text-sm">
-          <div className="flex items-center gap-1">
-            <Play className="text-sky-500" size={18} />
-            <span>{videos} videos</span>
-          </div>
-          <span>|</span>
-          <div className="flex items-center gap-1">
-            <Clock className="text-sky-500" size={18} />
-            <span>{hours} hours</span>
-          </div>
-          <span>|</span>
-          <div className="flex items-center gap-1">
-            <Dock className="text-sky-500" size={18} />
-            <span>{lessons} lessons</span>
-          </div>
-        </div>
-
-        <div className="w-full border border-sky-500 my-4" />
-
-        {/* Footer */}
-        <div className="flex justify-between items-center">
-          <button className="flex items-center justify-center gap-2 w-[140px] bg-sky-500 text-white h-11 rounded-3xl hover:bg-sky-600 transition">
-            Enroll Now
-            <ArrowRight size={20} />
-          </button>
-
-          <span className="text-sm border border-black px-3 py-2 rounded-full">
-            {fees} tk
-          </span>
-        </div>
-      </div>
-    </div>
+    </Link>
   );
 }
