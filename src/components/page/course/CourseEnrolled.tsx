@@ -44,7 +44,7 @@ export default function CourseEnrolled() {
 
           {/* Actions */}
           <div className="flex flex-wrap gap-4 pt-2">
-            <Link href="/courses/enrolled/123">
+            <Link href="/enrolled/11">
               <Button className="rounded-full px-6 py-6 text-base bg-sky-600 hover:bg-sky-700">
                 Continue Course
               </Button>
