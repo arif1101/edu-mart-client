@@ -1,20 +1,24 @@
 import CourseContent from "@/components/page/enrolledCourse/CourseContent";
-import LessonHeader from "@/components/page/enrolledCourse/LessonHeader";
+import CourseHeader from "@/components/page/enrolledCourse/CourseHeader";
 import VideoPlayer from "@/components/page/enrolledCourse/VideoPlayer";
+import { getCoursePlayerData } from "@/lib/course";
 
+export default async function CoursePlayerPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const { sections, lessons } = await getCoursePlayerData(params.id);
 
-export default function CourseVideoPage() {
   return (
-    <div className="flex h-screen bg-muted/40">
-      {/* Left */}
-      <div className="flex-1 p-6">
-        <VideoPlayer />
-        <LessonHeader />
-      </div>
+    <div className="min-h-screen bg-background">
+      <CourseHeader />
 
-      {/* Right */}
-      <div className="w-[380px] border-l bg-background">
-        <CourseContent />
+      <div className="mx-auto max-w-7xl px-4 py-6">
+        <div className="flex flex-col lg:flex-row gap-6">
+          <VideoPlayer lessons={lessons} />
+          <CourseContent sections={sections} lessons={lessons} />
+        </div>
       </div>
     </div>
   );

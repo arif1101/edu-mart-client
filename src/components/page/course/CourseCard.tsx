@@ -28,9 +28,6 @@ export default function CourseCard({
   layout,
   thumbnail,
 }: CourseCardProps) {
-
-    console.log("----title-------",title, averageRating, level, instructor)//undefine
-
     
     
   return (
