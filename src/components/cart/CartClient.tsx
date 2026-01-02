@@ -66,9 +66,9 @@ const handleRemove = async (courseId: string) => {
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
       {/* Cart Items */}
       <div className="lg:col-span-8 space-y-5">
-        {cart.items.map((item: any) => (
+        {cart.items.map((item: any, index:any) => (
           <CartItem
-            key={item.course}
+            key={index}
             item={item}
             onRemove={handleRemove}
           />
