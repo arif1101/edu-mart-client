@@ -8,4 +8,4 @@ export default async function CoursesPage() {
       <CoursesClient courses={courses.data} />;
     </div>
   );
-}
+} 

@@ -11,21 +11,15 @@ export default function CartItem({ item, onRemove }: any) {
 
       {/* Content */}
       <div className="flex-1">
-        <h3 className="text-lg font-semibold leading-tight">
-          {item.title}
-        </h3>
-        <p className="text-sm text-gray-500 mt-1">
-          By {item.instructor}
-        </p>
+        <h3 className="text-lg font-semibold leading-tight">{item.title}</h3>
+        <p className="text-sm text-gray-500 mt-1">By Instructor</p>
       </div>
 
       {/* Price + Remove */}
       <div className="text-right space-y-2">
-        <p className="font-semibold text-lg">
-          ৳ {item.price}
-        </p>
+        <p className="font-semibold text-lg">৳ {item.price}</p>
         <button
-          onClick={() => onRemove(item.id)}
+          onClick={() => onRemove(item.course._id)} // ✅ correct
           className="text-red-500 text-sm hover:underline flex items-center gap-1"
         >
           <Trash2 size={14} />

@@ -1,12 +1,30 @@
-export default function VideoPlayer() {
+"use client";
+
+import { useState } from "react";
+
+interface Lesson {
+  _id: string;
+  title: string;
+  videoUrl: string;
+}
+
+export default function VideoPlayer({ lessons }: { lessons: Lesson[] }) {
+  const [currentLesson, setCurrentLesson] = useState(lessons[0]);
+
   return (
-    <div className="aspect-video w-full rounded-lg overflow-hidden bg-black">
-      <iframe
-        className="h-full w-full"
-        src="https://www.youtube.com/embed/xpP5L1NuMQU?si=3RAXrQrzoP_Glktn"
-        title="Course Video"
-        allowFullScreen
-      />
+    <div className="w-full lg:flex-[3]">
+      <div className="mb-3 text-lg font-semibold">
+        {currentLesson.title}
+      </div>
+
+      <div className="aspect-video rounded-lg bg-black overflow-hidden shadow">
+        <iframe
+          key={currentLesson.videoUrl}
+          src={currentLesson.videoUrl}
+          className="w-full h-full"
+          allowFullScreen
+        />
+      </div>
     </div>
   );
 }

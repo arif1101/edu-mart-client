@@ -24,3 +24,30 @@ export async function getSingleCourse(id: string) {
 
   return res.json();
 }
+
+
+// lib/course.ts
+
+export async function getCoursePlayerData(courseId: string) {
+  // replace with real DB/API later
+  const sections = [
+    {
+      _id: "694ea0344cce9aacfb541abf",
+      title: "JavaScript Basics",
+      order: 0,
+    },
+  ];
+
+  const lessons = [
+    {
+      _id: "694ea4dabbb3d5db7cbf5812",
+      section: "694ea0344cce9aacfb541abf",
+      title: "JavaScript Introduction",
+      videoUrl: "https://www.youtube.com/embed/xpP5L1NuMQU?si=3RAXrQrzoP_Glktn",
+      order: 1,
+      isPreview: true,
+    },
+  ];
+
+  return { sections, lessons };
+}
