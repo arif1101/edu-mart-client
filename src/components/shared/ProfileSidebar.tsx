@@ -46,7 +46,7 @@ export default function ProfileSidebar({
     { label: "Participated Exams", href: "/exams/participated", icon: AlertCircle },
     { label: "Calendar", href: "/calendar", icon: Calendar },
     { label: "Order History", href: "/orders", icon: ListOrdered },
-    { label: "Admin Panel", href: "/admin-dashboard", icon: Settings },
+    { label: "Admin Panel", href: "/admin", icon: Settings },
   ];
 
   return (
