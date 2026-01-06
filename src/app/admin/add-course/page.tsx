@@ -1,38 +1,47 @@
 "use client";
 
-import { useState } from "react";
+import { useForm, useFieldArray } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { CourseFormType, CourseZodSchema } from "@/schema/course.schema";
 
 export default function AddCoursePage() {
-  const [form, setForm] = useState({
-    title: "",
-    subject: "",
-    category: "Technology",
-    language: "English",
-    classLevel: "Versity",
-    level: "Beginner",
-    duration: "",
-    price: "",
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CourseFormType>({
+    resolver: zodResolver(CourseZodSchema),
+    defaultValues: {
+      category: "Technology",
+      language: "English",
+      classLevel: "Versity",
+      level: "Beginner",
+      duration: 1,
+      instructor: { name: "" },
+      instructors: [{ name: "" }],
+      overview: {
+        description: "",
+        whatYouWillLearn: [],
+        requirements: [],
+        thisCourseIncludes: [],
+      },
+      curriculum: [{ title: "", contents: [""] }],
+    },
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const instructorsArray = useFieldArray({
+    control,
+    name: "instructors",
+  });
 
-  const createCourse = async () => {
-    const payload = {
-      title: form.title,
-      subject: form.subject,
-      category: form.category,
-      language: form.language,
-      classLevel: form.classLevel,
-      level: form.level,
-      duration: Number(form.duration),
-      price: form.price ? Number(form.price) : undefined,
-    };
+  const curriculumArray = useFieldArray({
+    control,
+    name: "curriculum",
+  });
 
+  const onSubmit = async (data: CourseFormType) => {
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/courses/create`,
@@ -40,123 +49,225 @@ export default function AddCoursePage() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
-          body: JSON.stringify(payload),
+          body: JSON.stringify(data),
         }
       );
 
-      const data = await res.json();
-
       if (!res.ok) {
-        toast.error(data.message || "Course creation failed");
+        toast.error("Course creation failed");
         return;
       }
 
       toast.success("Course created successfully");
-
-      // Optional: reset form
-      setForm({
-        title: "",
-        subject: "",
-        category: "Technology",
-        language: "English",
-        classLevel: "Versity",
-        level: "Beginner",
-        duration: "",
-        price: "",
-      });
     } catch {
       toast.error("Something went wrong");
     }
   };
 
+  const toStringArray = (v: unknown): string[] => {
+    if (Array.isArray(v)) return v;
+    if (typeof v === "string")
+      return v
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
+    return [];
+  };
+
   return (
-    <div className="max-w-xl mx-auto p-6 space-y-4">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="max-w-4xl mx-auto p-6 space-y-6"
+    >
       <h1 className="text-2xl font-bold">Add Course</h1>
 
+      {/* BASIC INFO */}
       <input
-        name="title"
-        placeholder="Course Title"
+        {...register("title")}
+        placeholder="Title"
         className="border p-2 w-full"
-        value={form.title}
-        onChange={handleChange}
       />
+      <p className="text-red-500">{errors.title?.message}</p>
 
       <input
-        name="subject"
-        placeholder="Subject (e.g. JavaScript)"
+        {...register("subject")}
+        placeholder="Subject"
         className="border p-2 w-full"
-        value={form.subject}
-        onChange={handleChange}
       />
 
-      <select
-        name="category"
-        className="border p-2 w-full"
-        value={form.category}
-        onChange={handleChange}
-      >
-        <option value="Academic">Academic</option>
-        <option value="Technology">Technology</option>
-        <option value="Business">Business</option>
-        <option value="Arts">Arts</option>
-        <option value="Language">Language</option>
+      {/* ENUMS */}
+      <select {...register("category")} className="border p-2 w-full">
+        {["Academic", "Technology", "Business", "Arts", "Language"].map((v) => (
+          <option key={v} value={v}>
+            {v}
+          </option>
+        ))}
       </select>
 
-      <select
-        name="language"
-        className="border p-2 w-full"
-        value={form.language}
-        onChange={handleChange}
-      >
+      <select {...register("language")} className="border p-2 w-full">
         <option value="English">English</option>
         <option value="Bangla">Bangla</option>
       </select>
 
-      <select
-        name="classLevel"
-        className="border p-2 w-full"
-        value={form.classLevel}
-        onChange={handleChange}
-      >
+      <select {...register("classLevel")} className="border p-2 w-full">
         <option value="Class 11-12">Class 11-12</option>
         <option value="Versity">Versity</option>
       </select>
 
-      <select
-        name="level"
-        className="border p-2 w-full"
-        value={form.level}
-        onChange={handleChange}
-      >
+      <select {...register("level")} className="border p-2 w-full">
         <option value="Beginner">Beginner</option>
         <option value="Intermediate">Intermediate</option>
         <option value="Advanced">Advanced</option>
       </select>
 
+      {/* NUMBERS */}
       <input
-        name="duration"
         type="number"
+        {...register("duration", { valueAsNumber: true })}
         placeholder="Duration (hours)"
         className="border p-2 w-full"
-        value={form.duration}
-        onChange={handleChange}
+      />
+      <input
+        type="number"
+        {...register("price", { valueAsNumber: true })}
+        placeholder="Price (optional)"
+        className="border p-2 w-full"
+      />
+
+      {/* MEDIA */}
+      <input
+        {...register("thumbnail")}
+        placeholder="Thumbnail URL"
+        className="border p-2 w-full"
       />
 
       <input
-        name="price"
-        type="number"
-        placeholder="Price (optional)"
+        placeholder="Tags (comma separated)"
         className="border p-2 w-full"
-        value={form.price}
-        onChange={handleChange}
+        {...register("tags", {
+          setValueAs: toStringArray,
+        })}
       />
 
+      {/* PRIMARY INSTRUCTOR */}
+      <h2 className="font-semibold">Primary Instructor</h2>
+      <input
+        {...register("instructor.name")}
+        placeholder="Name"
+        className="border p-2 w-full"
+      />
+      <input
+        {...register("instructor.photo")}
+        placeholder="Photo URL"
+        className="border p-2 w-full"
+      />
+      <input
+        {...register("instructor.status")}
+        placeholder="Status"
+        className="border p-2 w-full"
+      />
+
+      {/* MULTIPLE INSTRUCTORS */}
+      <h2 className="font-semibold">Other Instructors</h2>
+
+      {instructorsArray.fields.map((field, index) => (
+        <div key={field.id} className="border p-4 space-y-2">
+          <input
+            {...register(`instructors.${index}.name`)}
+            placeholder="Name"
+            className="border p-2 w-full"
+          />
+          <input
+            {...register(`instructors.${index}.photo`)}
+            placeholder="Photo URL"
+            className="border p-2 w-full"
+          />
+          <input
+            {...register(`instructors.${index}.status`)}
+            placeholder="Status"
+            className="border p-2 w-full"
+          />
+          <button type="button" onClick={() => instructorsArray.remove(index)}>
+            Remove
+          </button>
+        </div>
+      ))}
+
       <button
-        onClick={createCourse}
-        className="bg-black text-white px-4 py-2 w-full"
+        type="button"
+        onClick={() => instructorsArray.append({ name: "" })}
       >
+        + Add Instructor
+      </button>
+
+      {/* OVERVIEW */}
+      <h2 className="font-semibold">Overview</h2>
+
+      <textarea
+        {...register("overview.description")}
+        placeholder="Description"
+        className="border p-2 w-full"
+      />
+
+      <textarea
+        placeholder="What you will learn (comma separated)"
+        className="border p-2 w-full"
+        {...register("overview.whatYouWillLearn", {
+          setValueAs: toStringArray,
+        })}
+      />
+
+      <textarea
+        placeholder="Requirements (comma separated)"
+        className="border p-2 w-full"
+        {...register("overview.requirements", {
+          setValueAs: toStringArray,
+        })}
+      />
+
+      <textarea
+        placeholder="This course includes (comma separated)"
+        className="border p-2 w-full"
+        {...register("overview.thisCourseIncludes", {
+          setValueAs: toStringArray,
+        })}
+      />
+
+      {/* CURRICULUM */}
+      <h2 className="font-semibold">Curriculum</h2>
+
+      {curriculumArray.fields.map((field, index) => (
+        <div key={field.id} className="border p-4 space-y-2">
+          <input
+            {...register(`curriculum.${index}.title`)}
+            placeholder="Section title"
+            className="border p-2 w-full"
+          />
+
+          <textarea
+            placeholder="Contents (comma separated)"
+            className="border p-2 w-full"
+            {...register(`curriculum.${index}.contents`, {
+              setValueAs: toStringArray,
+            })}
+          />
+
+          <button type="button" onClick={() => curriculumArray.remove(index)}>
+            Remove Section
+          </button>
+        </div>
+      ))}
+
+      <button
+        type="button"
+        onClick={() => curriculumArray.append({ title: "", contents: [""] })}
+      >
+        + Add Curriculum Section
+      </button>
+
+      <button type="submit" className="bg-black text-white px-4 py-2 w-full">
         Create Course
       </button>
-    </div>
+    </form>
   );
 }
