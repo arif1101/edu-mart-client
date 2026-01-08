@@ -76,41 +76,6 @@ export default function AboutPage() {
     'Mobile learning app'
   ];
 
-  const faqs = [
-    {
-      question: 'What is EduMart?',
-      answer: 'EduMart is a comprehensive online learning platform that connects students with expert instructors worldwide. We offer over 1,000 courses across various categories including technology, business, design, and personal development.'
-    },
-    {
-      question: 'How do I enroll in a course?',
-      answer: 'Simply browse our course catalog, select the course you\'re interested in, and click "Enroll Now". You\'ll need to create an account if you haven\'t already. Once enrolled, you\'ll have immediate access to all course materials.'
-    },
-    {
-      question: 'Do I get a certificate after completing a course?',
-      answer: 'Yes! Upon successful completion of any course, you\'ll receive a certificate of completion that you can share on LinkedIn, add to your resume, or showcase in your portfolio.'
-    },
-    {
-      question: 'Can I access courses on mobile devices?',
-      answer: 'Absolutely! EduMart is fully responsive and we also offer dedicated mobile apps for iOS and Android. Learn on-the-go, anytime and anywhere.'
-    },
-    {
-      question: 'What if I\'m not satisfied with a course?',
-      answer: 'We offer a 30-day money-back guarantee on all courses. If you\'re not completely satisfied, simply contact our support team within 30 days of purchase for a full refund.'
-    },
-    {
-      question: 'Are the courses self-paced or scheduled?',
-      answer: 'Most of our courses are self-paced, allowing you to learn at your own speed. However, we also offer live cohort-based courses with scheduled sessions and real-time interaction with instructors.'
-    },
-    {
-      question: 'Do I need any prerequisites to start learning?',
-      answer: 'Prerequisites vary by course. Each course page clearly lists any required knowledge or skills. We offer courses for all levels—from complete beginners to advanced professionals.'
-    },
-    {
-      question: 'How long do I have access to course materials?',
-      answer: 'Once you enroll in a course, you have lifetime access to all course materials, including future updates. Learn at your own pace without any time pressure.'
-    }
-  ];
-
   return (
     <div className="min-h-screen bg-white">
       {/* Header Section */}

@@ -31,7 +31,8 @@ export default function CourseDetails({ course }: Props) {
       console.log("Cart updated:", res);
       alert("Course added to cart successfully");
     } catch (error: any) {
-      alert(error.message);
+      alert((error.message))
+      console.log("-----course details--",error.message);// faild to fetch
     } finally {
       setLoading(false);
     }

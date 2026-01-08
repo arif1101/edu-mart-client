@@ -47,3 +47,20 @@ export interface Course {
   createdAt: string
   updatedAt: string
 }
+
+export interface Lesson {
+  _id: string;
+  title: string;
+  videoUrl: string;
+  order: number;
+  section: string;
+  isPreview: boolean;
+}
+
+export interface Section {
+  _id: string;
+  title: string;
+  order: number;
+  lessons: Lesson[];
+}
+

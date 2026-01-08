@@ -1,6 +1,5 @@
 // components/page/home/PopularCourses.tsx
 import Link from "next/link";
-import CourseCard from "../course/PopularCourseCard";
 import { Course } from "@/types/course";
 import PopularCourseCard from "../course/PopularCourseCard";
 
@@ -52,9 +51,29 @@ export default function PopularCourses({ courses }: Props) {
       {/* Courses Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {courses.length > 0 ? (
-          courses.map((course, index) => (
-            <PopularCourseCard key={index} {...course} />
-          ))
+          courses.map((course) => {
+            const totalLessons =
+              course.curriculum?.reduce(
+                (acc, section) => acc + section.contents.length,
+                0
+              ) ?? 0;
+
+            return (
+              <PopularCourseCard
+                key={course._id}
+                thumbnail={course.thumbnail}
+                title={course.title}
+                description={
+                  course.overview?.description ?? "No description available"
+                }
+                videos={totalLessons}
+                lessons={totalLessons}
+                hours={course.duration}
+                fees={course.price}
+                rating={course.averageRating}
+              />
+            );
+          })
         ) : (
           <p className="col-span-3 text-center text-gray-500">
             No courses found.
