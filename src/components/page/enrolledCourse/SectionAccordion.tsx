@@ -44,21 +44,8 @@ import {
 } from "@/components/ui/accordion";
 import { PlayCircle, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Lesson, Section } from "@/types/course";
 
-interface Lesson {
-  _id: string;
-  title: string;
-  videoUrl: string;
-  order: number;
-  isPreview: boolean;
-}
-
-interface Section {
-  _id: string;
-  title: string;
-  order: number;
-  lessons: Lesson[];
-}
 
 interface SectionAccordionProps {
   sections: Section[];

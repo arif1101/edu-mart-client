@@ -1,5 +1,5 @@
-export async function addCourseToCart(courseId: string) {
-    console.log("-------------", courseId)// i get here id
+export const addCourseToCart = async (courseId: string) => {
+  console.log()
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/cart/course/add`,
     {
@@ -7,18 +7,20 @@ export async function addCourseToCart(courseId: string) {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include", // 🔥 THIS IS THE KEY
+      credentials: "include",
       body: JSON.stringify({ courseId }),
     }
   );
+  console.log("--------res ourse cart-------", res)
 
   if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error.message || "Failed to add to cart");
+    const text = await res.text();
+    throw new Error(text);
   }
 
   return res.json();
-}
+};
+
 
 export async function removeCourseFromCart(courseId: string) {
   const res = await fetch(

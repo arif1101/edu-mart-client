@@ -6,22 +6,9 @@ import CourseContent from "@/components/page/enrolledCourse/CourseContent";
 import CourseHeader from "@/components/page/enrolledCourse/CourseHeader";
 import VideoPlayer from "@/components/page/enrolledCourse/VideoPlayer";
 import { Loader2 } from "lucide-react";
+import { Lesson, Section } from "@/types/course";
 
-interface Lesson {
-  _id: string;
-  title: string;
-  videoUrl: string;
-  order: number;
-  section: string;
-  isPreview: boolean;
-}
 
-interface Section {
-  _id: string;
-  title: string;
-  order: number;
-  lessons: Lesson[];
-}
 
 interface Course {
   _id: string;
@@ -32,6 +19,8 @@ interface Course {
     photo: string;
   };
 }
+
+
 
 export default function CoursePlayerClient({
   courseId,
@@ -89,6 +78,11 @@ export default function CoursePlayerClient({
 
   const allLessons = sections.flatMap((s) => s.lessons);
 
+  // Handler to select a lesson
+  const handleLessonSelect = (lesson: Lesson) => {
+    setCurrentLesson(lesson);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <CourseHeader course={course} />
@@ -96,11 +90,12 @@ export default function CoursePlayerClient({
         {currentLesson && (
           <VideoPlayer lesson={currentLesson} allLessons={allLessons} />
         )}
-        <CourseContent
-          sections={sections}
-          currentLessonId={currentLesson?._id}
-          onLessonSelect={setCurrentLesson}
-        />
+<CourseContent
+  sections={sections}
+  currentLessonId={currentLesson?._id}
+  onLessonSelect={(lesson) => setCurrentLesson(lesson)}
+/>
+
       </div>
     </div>
   );
