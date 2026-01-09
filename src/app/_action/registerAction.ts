@@ -13,7 +13,7 @@ export async function registerAction(_: any, formData: FormData) {
       return { success: false, message: "All fields are required" };
     }
 
-    const res = await fetch("http://localhost:5000/api/user/register", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/user/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, email, password }),

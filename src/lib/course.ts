@@ -1,12 +1,15 @@
+// lib/course.ts
 "use server";
 
 import { cookies } from "next/headers";
 
 // Public courses (no auth needed)
 export async function getCourses() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/courses`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/courses`, { // ✅ Add parentheses
     cache: "no-store",
   });
+
+  console.log("----------courses11-------------", res)
 
   if (!res.ok) {
     throw new Error("Failed to fetch courses");
@@ -19,7 +22,7 @@ export async function getCourses() {
 export async function getSingleCourse(id: string) {
   console.log("--------checking for single course-------:", id);
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/courses/${id}`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/courses/${id}`, // ✅ Correct
     { cache: "no-store" }
   );
 
@@ -40,7 +43,7 @@ export async function getEnrolledCourseWithSections(courseId: string) {
   }
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/courses/${courseId}/full`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/courses/${courseId}/full`, // ✅ Correct
     {
       method: "GET",
       headers: {
@@ -56,28 +59,4 @@ export async function getEnrolledCourseWithSections(courseId: string) {
 
   const response = await res.json();
   return response.data;
-}
-
-// Mock data - can be removed when real API is ready
-export async function getCoursePlayerData(courseId: string) {
-  const sections = [
-    {
-      _id: "694ea0344cce9aacfb541abf",
-      title: "JavaScript Basics",
-      order: 0,
-    },
-  ];
-
-  const lessons = [
-    {
-      _id: "694ea4dabbb3d5db7cbf5812",
-      section: "694ea0344cce9aacfb541abf",
-      title: "JavaScript Introduction",
-      videoUrl: "https://www.youtube.com/embed/xpP5L1NuMQU?si=3RAXrQrzoP_Glktn",
-      order: 1,
-      isPreview: true,
-    },
-  ];
-
-  return { sections, lessons };
 }

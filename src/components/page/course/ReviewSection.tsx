@@ -12,6 +12,7 @@ import {
   getMyReviewForCourse,
 } from "@/lib/review";
 import { getAuthUser } from "@/app/_action/auth";
+import { toast } from "sonner";
 
 interface Review {
   _id: string;
@@ -74,12 +75,12 @@ export default function ReviewSection({ courseId, averageRating }: ReviewSection
     e.preventDefault();
 
     if (!currentUser) {
-      alert("Please login to review");
+      toast.error("You must be logged in to submit a review");
       return;
     }
 
     if (message.length < 10) {
-      alert("Review must be at least 10 characters");
+      toast.error("Review must be at least 10 characters");
       return;
     }
 
@@ -89,11 +90,11 @@ export default function ReviewSection({ courseId, averageRating }: ReviewSection
       if (isEditing && myReview) {
         // Update existing review
         await updateReview(myReview._id, rating, message);
-        alert("Review updated successfully!");
+        toast.success("Review updated successfully!");
       } else {
         // Create new review
         await createReview(courseId, rating, message);
-        alert("Review submitted successfully!");
+        toast.success("Review submitted successfully!");
       }
 
       // Reset form
@@ -104,7 +105,8 @@ export default function ReviewSection({ courseId, averageRating }: ReviewSection
       // Refresh reviews
       await fetchData();
     } catch (error: any) {
-      alert(error.message || "Failed to submit review");
+      // error.message ||
+      toast.error("have to enroll in course to review");
     } finally {
       setSubmitting(false);
     }
@@ -127,13 +129,13 @@ export default function ReviewSection({ courseId, averageRating }: ReviewSection
 
     try {
       await deleteReview(myReview._id);
-      alert("Review deleted successfully!");
+      toast.success("Review deleted successfully!");
       setMessage("");
       setRating(5);
       setIsEditing(false);
       await fetchData();
     } catch (error: any) {
-      alert(error.message || "Failed to delete review");
+      toast.error(error.message || "Failed to delete review");
     }
   };
 

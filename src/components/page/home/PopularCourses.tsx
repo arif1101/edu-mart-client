@@ -8,6 +8,9 @@ interface Props {
 }
 
 export default function PopularCourses({ courses }: Props) {
+  // Show only first 6 courses
+  const displayedCourses = courses.slice(0, 6);
+
   return (
     <div className="p-6 mt-24 flex flex-col gap-6 lg:gap-10">
       {/* Header */}
@@ -49,9 +52,9 @@ export default function PopularCourses({ courses }: Props) {
       </div>
 
       {/* Courses Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {courses.length > 0 ? (
-          courses.map((course) => {
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {displayedCourses.length > 0 ? (
+          displayedCourses.map((course) => {
             const totalLessons =
               course.curriculum?.reduce(
                 (acc, section) => acc + section.contents.length,
@@ -71,6 +74,8 @@ export default function PopularCourses({ courses }: Props) {
                 hours={course.duration}
                 fees={course.price}
                 rating={course.averageRating}
+                // Pass the link to the course page
+                link={`/courses/${course._id}`}
               />
             );
           })

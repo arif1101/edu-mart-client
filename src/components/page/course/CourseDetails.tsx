@@ -17,6 +17,7 @@ import { addCourseToCart, getCart } from "@/lib/cart";
 import { getMyEnrollments } from "@/lib/enrollment";
 import { Course } from "@/types/course";
 import Link from "next/link";
+import { toast } from "sonner";
 
 type Props = {
   course: Course;
@@ -58,12 +59,12 @@ export default function CourseDetails({ course }: Props) {
 
   const handleEnroll = async () => {
     if (isInCart) {
-      alert("This course is already in your cart!");
+      toast.error("Course is already in your cart!");
       return;
     }
 
     if (isEnrolled) {
-      alert("You are already enrolled in this course!");
+      toast.error("You are already enrolled in this course!");
       return;
     }
 
@@ -71,17 +72,16 @@ export default function CourseDetails({ course }: Props) {
       setLoading(true);
       await addCourseToCart(course._id);
       setIsInCart(true);
-      alert("Course added to cart successfully");
+      toast.success("Course added to cart successfully");
     } catch (error: any) {
-      alert(error.message);
-      console.log("-----course details--", error.message);
+      toast.error("Failed to add course to cart");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="pt-6 container mx-auto">
+    <div className="pt-6 container mx-auto mb-24">
       <h1 className="text-4xl font-bold mb-4">{course.title}</h1>
 
       <div className="flex gap-6 mb-6">

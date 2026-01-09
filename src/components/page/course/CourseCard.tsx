@@ -4,6 +4,7 @@ import { Book, Network, Timer, TimerIcon, User } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import CardRating from "@/components/ui/CardRating";
+import SafeImage from "@/components/SafeImage";
 
 type CourseCardProps = {
   _id: string;
@@ -28,8 +29,6 @@ export default function CourseCard({
   layout,
   thumbnail,
 }: CourseCardProps) {
-    
-    
   return (
     <Link href={`/courses/${_id}`} className="block">
       <div
@@ -43,11 +42,12 @@ export default function CourseCard({
           <>
             {/* Thumbnail */}
             <div className="relative h-[181.75px] w-full">
-              <Image
+              <SafeImage
                 src={thumbnail || "/placeholder.jpg"}
                 alt={title}
                 fill
-                className="object-cover rounded-t-xl"
+                className="object-cover rounded-lg"
+                sizes="(max-width: 768px) 100vw, 33vw"
               />
               <p className="absolute top-2 left-2 bg-sky-500 text-white text-xs md:text-sm font-semibold px-2 py-1 rounded">
                 {level}
@@ -121,9 +121,7 @@ export default function CourseCard({
                 </div>
               </div>
 
-              <p className="line-clamp-2">
-                Hands-on data science with Python.
-              </p>
+              <p className="line-clamp-2">Hands-on data science with Python.</p>
 
               <div className="flex justify-between items-center text-sm">
                 <div className="flex items-center gap-1">
