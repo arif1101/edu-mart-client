@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { CourseFormType, CourseZodSchema } from "@/schema/course.schema";
+import { createCourse } from "@/lib/course";
 
 export default function AddCoursePage() {
   const {
@@ -41,28 +43,15 @@ export default function AddCoursePage() {
     name: "curriculum",
   });
 
-  const onSubmit = async (data: CourseFormType) => {
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/courses/create`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify(data),
-        }
-      );
+const onSubmit = async (data: CourseFormType) => {
+  try {
+    await createCourse(data);
+    toast.success("Course created successfully");
+  } catch (err: any) {
+    toast.error(err.message || "Something went wrong");
+  }
+};
 
-      if (!res.ok) {
-        toast.error("Course creation failed");
-        return;
-      }
-
-      toast.success("Course created successfully");
-    } catch {
-      toast.error("Something went wrong");
-    }
-  };
 
   const toStringArray = (v: unknown): string[] => {
     if (Array.isArray(v)) return v;
