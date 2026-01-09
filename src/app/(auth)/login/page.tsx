@@ -27,12 +27,6 @@ export default function Page() {
           </CardContent>
 
           <CardFooter className="flex flex-col gap-3 pb-8">
-            <Button
-              variant="outline"
-              className="w-full rounded-xl shadow-sm hover:bg-sky-50 border-sky-200 text-sky-600"
-            >
-              Login with Google
-            </Button>
 
             <p className="text-sm text-center text-gray-500">
               Don’t have an account?{" "}

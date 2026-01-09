@@ -10,6 +10,8 @@ import {
   Star,
   Activity,
 } from "lucide-react";
+import { getAdminDashboard } from "@/lib/adminDashboard";
+
 
 /* -------------------- Stat Card -------------------- */
 type StatCardProps = {
@@ -46,9 +48,7 @@ const EnrollmentChart = ({ data }: any) => {
           <div key={i} className="flex flex-col items-center flex-1">
             <div
               className="w-8 bg-purple-500 rounded-t-md"
-              style={{
-                height: `${(item.enrolled / max) * 100}%`,
-              }}
+              style={{ height: `${(item.enrolled / max) * 100}%` }}
             />
             <span className="text-xs mt-2 text-gray-500">
               {item._id.month}/{item._id.year}
@@ -93,16 +93,24 @@ const CoursePopularityChart = ({ data }: any) => {
 /* -------------------- Main Page -------------------- */
 export default function AdminDashboardPage() {
   const [data, setData] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/admin/dashboard", {
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((res) => setData(res.data));
+    getAdminDashboard()
+      .then(setData)
+      .catch((err) => {
+        console.error(err);
+        setError(err.message);
+      });
   }, []);
 
-  if (!data) return null;
+  if (error) {
+    return <p className="text-red-500 p-6">{error}</p>;
+  }
+
+  if (!data) {
+    return <p className="p-6">Loading dashboard...</p>;
+  }
 
   const { stats, charts } = data;
 

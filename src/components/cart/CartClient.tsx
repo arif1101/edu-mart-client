@@ -26,19 +26,21 @@ export default function CartClient() {
     }
   };
 
-  const handleRemove = async (courseId: string) => {
-    console.log("---------------------", courseId);
-    try {
-      await removeCourseFromCart(courseId);
+const handleRemove = async (courseId: string) => {
+  try {
+    await removeCourseFromCart(courseId);
 
-      setCart((prev: any) => ({
-        ...prev,
-        items: prev.items.filter((item: any) => item.course !== courseId),
-      }));
-    } catch (error: any) {
-      console.log(error.message);
-    }
-  };
+    setCart((prev: any) => ({
+      ...prev,
+      items: prev.items.filter(
+        (item: any) => item.course._id !== courseId
+      ),
+    }));
+  } catch (error: any) {
+    console.log(error.message);
+  }
+};
+
 
   const subtotal =
     cart?.items?.reduce((sum: number, item: any) => sum + item.price, 0) || 0;

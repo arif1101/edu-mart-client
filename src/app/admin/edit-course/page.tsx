@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
+import { deleteCourse } from "@/lib/course";
 
 export default function EditCoursePage() {
   const [courses, setCourses] = useState<any[]>([]);
@@ -32,38 +33,27 @@ export default function EditCoursePage() {
     });
   };
 
-  const handleDelete = async (courseId: string) => {
-    if (loadingId) return;
+const handleDelete = async (courseId: string) => {
+  if (loadingId) return;
 
-    setLoadingId(courseId);
-    const toastId = toast.loading("Deleting course...");
+  setLoadingId(courseId);
+  const toastId = toast.loading("Deleting course...");
 
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/courses/${courseId}`,
-        {
-          method: "DELETE",
-          credentials: "include",
-        }
-      );
+  try {
+    await deleteCourse(courseId);
 
-      const result = await res.json();
+    setCourses((prev) =>
+      prev.filter((course) => course._id !== courseId)
+    );
 
-      if (!res.ok) {
-        throw new Error(result.message || "Delete failed");
-      }
+    toast.success("Course deleted successfully", { id: toastId });
+  } catch (error: any) {
+    toast.error(error.message || "Something went wrong", { id: toastId });
+  } finally {
+    setLoadingId(null);
+  }
+};
 
-      setCourses((prev) =>
-        prev.filter((course) => course._id !== courseId)
-      );
-
-      toast.success("Course deleted successfully", { id: toastId });
-    } catch (error: any) {
-      toast.error(error.message || "Something went wrong", { id: toastId });
-    } finally {
-      setLoadingId(null);
-    }
-  };
 
   return (
     <div className="space-y-4">
