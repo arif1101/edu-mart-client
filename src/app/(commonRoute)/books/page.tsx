@@ -7,7 +7,7 @@ export default async function BooksPage() {
   
   return (
     <div className="container mx-auto">
-      <BookClient books={books.data}/>;
+      <BookClient books={books.data}/>
     </div>
   )
 }

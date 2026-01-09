@@ -5,7 +5,7 @@ export default async function CoursesPage() {
   const courses = await getCourses(); // server-side
   return (
     <div className="container mx-auto">
-      <CoursesClient courses={courses.data} />;
+      <CoursesClient courses={courses.data} />
     </div>
   );
 } 

@@ -1,3 +1,8 @@
+"use server";
+
+import { cookies } from "next/headers";
+
+// Public courses (no auth needed)
 export async function getCourses() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/courses`, {
     cache: "no-store",
@@ -10,9 +15,9 @@ export async function getCourses() {
   return res.json();
 }
 
-// course.ts
+// Single course details (no auth needed)
 export async function getSingleCourse(id: string) {
-  console.log("--------checking for sngle course-------:", id)
+  console.log("--------checking for single course-------:", id);
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/courses/${id}`,
     { cache: "no-store" }
@@ -25,11 +30,36 @@ export async function getSingleCourse(id: string) {
   return res.json();
 }
 
+// Enrolled course with sections and lessons (auth required)
+export async function getEnrolledCourseWithSections(courseId: string) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("accessToken")?.value;
 
-// lib/course.ts
+  if (!token) {
+    throw new Error("Not authenticated");
+  }
 
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/courses/${courseId}/full`,
+    {
+      method: "GET",
+      headers: {
+        Cookie: `accessToken=${token}`,
+      },
+      cache: "no-store",
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch course data");
+  }
+
+  const response = await res.json();
+  return response.data;
+}
+
+// Mock data - can be removed when real API is ready
 export async function getCoursePlayerData(courseId: string) {
-  // replace with real DB/API later
   const sections = [
     {
       _id: "694ea0344cce9aacfb541abf",

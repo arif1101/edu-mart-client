@@ -1,51 +1,53 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// @/types/course.ts
 export interface Instructor {
-  _id: string
-  name: string
-  photo: string
-  status: string
+  _id: string;
+  name: string;
+  photo: string;
+  status: string;
 }
 
 export interface CurriculumItem {
-  _id: string
-  title: string
-  contents: string[]
+  _id: string;
+  title: string;
+  contents: string[];
 }
 
 export interface CourseOverview {
-  description: string
-  requirements: string[]
+  description: string;
+  requirements: string[];
+  whatYouWillLearn: string[];      // ✅ Added
+  thisCourseIncludes: string[];    // ✅ Added
+  _id?: string;
 }
 
 export interface Course {
-  _id: string
-  title: string
-  subject: string
-  category: string
-  classLevel: string
-  level: string
-  language: string
+  _id: string;
+  title: string;
+  subject: string;
+  category: string;
+  classLevel: string;
+  level: string;
+  language: string;
 
-  thumbnail: string
-  price: number
-  duration: number
-  studentsEnrolled: number
-  averageRating: number
+  thumbnail: string;
+  price: number;
+  duration: number;
+  studentsEnrolled: number;
+  averageRating: number;
 
-  instructors: Instructor[]
-  instructor: Instructor // primary instructor (featured)
+  instructors: Instructor[];
+  instructor: Instructor;
 
-  curriculum: CurriculumItem[]
+  curriculum: CurriculumItem[];
+  overview: CourseOverview;
 
-  overview: CourseOverview
-  whatYouWillLearn: string[]
-  thisCourseIncludes: string[]
+  tags: string[];
+  reviews: any[];
 
-  tags: string[]
-  reviews: any[]
-
-  lastUpdate: string
-  createdAt: string
-  updatedAt: string
+  lastUpdate: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Lesson {
@@ -63,4 +65,3 @@ export interface Section {
   order: number;
   lessons: Lesson[];
 }
-

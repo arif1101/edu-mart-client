@@ -6,17 +6,40 @@
 // export default nextConfig;
 
 
-import type { NextConfig } from "next";
+// import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
+// const nextConfig: NextConfig = {
+//   images: {
+//     remotePatterns: [
+//       { protocol: "https", hostname: "i.ibb.co.com" },
+//       { protocol: "https", hostname: "example.com" },
+//     ],
+//   },
+// };
+
+// export default nextConfig;
+
+
+// next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   images: {
     remotePatterns: [
-      { protocol: "https", hostname: "i.ibb.co.com" },
-      { protocol: "https", hostname: "example.com" },
+      {
+        protocol: 'https',
+        hostname: 'i.ibb.co.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.ibb.co',
+      },
+      // Add any other image hosting domains you use
+      {
+        protocol: 'https',
+        hostname: '**', // Allow all HTTPS domains (use cautiously)
+      },
     ],
   },
 };
 
-export default nextConfig;
-
-
+module.exports = nextConfig;
