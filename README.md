@@ -3,7 +3,7 @@
 [![Client Deployment](https://img.shields.io/badge/Client-Live-blue)](https://edu-mart-client.vercel.app/)  
 [![Server Deployment](https://img.shields.io/badge/Server-Live-green)](https://edu-tech-server-two.vercel.app/)  
 
-EduTech is a modern online learning platform built with **Next.js** for the client and **Node.js/Express** for the server. It allows users to browse courses, enroll in them, read blogs, and provides an admin dashboard for managing courses, users, and content. Authentication is handled securely with **JWT tokens and cookies**.  
+EduTech is a modern online learning platform built with **Next.js 14** (App Router) for the client and **Node.js/Express** for the server. Users can browse courses, enroll, read blogs, and admins can manage content through a dedicated dashboard. Authentication is handled securely with **JWT tokens and cookies**.  
 
 ---
 
@@ -15,6 +15,7 @@ EduTech is a modern online learning platform built with **Next.js** for the clie
 - [Installation](#installation)
 - [Project Structure](#project-structure)
 - [Usage](#usage)
+- [Future Enhancements](#future-enhancements)
 - [License](#license)
 
 ---
@@ -22,23 +23,22 @@ EduTech is a modern online learning platform built with **Next.js** for the clie
 ## Features
 
 ### User Features
-- Browse and search courses by category, subject, and language
-- Enroll in courses with secure authentication
-- Access course content including videos, lessons, and descriptions
+- Browse courses by category, subject, and language
+- Enroll in courses securely
+- Access course content: lessons, videos, and descriptions
 - Read and comment on blogs
-- View enrolled courses and progress
+- View enrolled courses and track progress
 
 ### Admin Features
-- Dashboard to manage users, courses, and blogs
-- Add, update, and delete courses
-- Manage course enrollments
-- View site analytics and reports
+- Dashboard to manage courses, sections, and blogs
+- Add, edit, or delete courses and blogs
+- Manage users and course enrollments
 - Role-based access control
 
 ### Authentication & Security
-- JWT authentication with secure cookie storage
+- JWT authentication with secure cookies
 - Password hashing and user role verification
-- Protected routes for authenticated users and admin
+- Protected routes for users and admin
 
 ---
 
@@ -52,8 +52,9 @@ EduTech is a modern online learning platform built with **Next.js** for the clie
 ## Technologies
 
 **Frontend (Client):**
-- Next.js 14
-- React
+- Next.js 14 (App Router)
+- React 18
+- TypeScript
 - Tailwind CSS
 - Axios / React Query
 - Vercel Deployment
@@ -64,19 +65,16 @@ EduTech is a modern online learning platform built with **Next.js** for the clie
 - MongoDB (Atlas)
 - Mongoose ORM
 - JWT Authentication
-- Deployment on Render / Vercel
 
-**Tools & Libraries:**
+**Libraries & Tools:**
 - ESLint & Prettier
 - Sonner (Notifications)
-- React Hook Form (Forms)
+- React Hook Form
 - Framer Motion (Animations)
 
 ---
 
 ## Admin Credentials
-
-Use the following credentials to access the admin dashboard:
 
 - **Email:** admin@gmail.com  
 - **Password:** 11111111 / 22222222
@@ -99,7 +97,7 @@ Copy code
 cd EduTech-sever
 npm install
 cp .env.example .env
-# Edit .env with your MongoDB URI and JWT_SECRET
+# Update .env with your MongoDB URI and JWT_SECRET
 npm run dev
 Setup Client
 bash
@@ -107,50 +105,82 @@ Copy code
 cd edu-mart-client
 npm install
 cp .env.local.example .env.local
-# Edit .env.local with API base URL
+# Update .env.local with API base URL
 npm run dev
 Project Structure
-Client (edu-mart-client)
-php
+Client (edu-mart-client/src)
+pgsql
 Copy code
-├── app/                 # Next.js app pages
-├── components/          # Reusable components
-├── hooks/               # Custom React hooks
-├── types/               # TypeScript interfaces
-├── utils/               # Utilities (fetchers, helpers)
-├── public/              # Static assets
-└── styles/              # Tailwind and global styles
-Server (EduTech-sever)
-csharp
-Copy code
-├── src/
-│   ├── controllers/     # Route controllers
-│   ├── models/          # Mongoose models
-│   ├── routes/          # API routes
-│   ├── services/        # Business logic
-│   ├── middleware/      # Authentication & error handling
-│   └── utils/           # Helpers (catchAsync, error handlers)
-└── index.js              # Server entry point
+src/
+├── app/
+│   ├── _action/
+│   ├── auth/
+│   ├── (commonRoute)/
+│   ├── admin/
+│   │   ├── add-blog/
+│   │   ├── add-course/
+│   │   ├── course/
+│   │   ├── edit-course/
+│   │   ├── sections/
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── payment/
+│   ├── unauthorized/
+│   ├── favicon.ico
+│   ├── globals.css
+│   └── layout.tsx
+├── components/
+│   ├── admin/
+│   ├── cart/
+│   ├── page/
+│   │   ├── blog/
+│   │   ├── book/
+│   │   ├── course/
+│   │   ├── dashboard/
+│   │   ├── enrolledCourse/
+│   │   ├── home/
+│   │   ├── login/
+│   │   ├── signup/
+│   │   └── user/
+│   ├── payment/
+│   ├── shared/
+│   ├── ui/
+│   └── SafeImage.tsx
+├── data/
+└── hooks/
+Key Notes:
+
+/app → Next.js App Router pages
+
+/components → Reusable components for UI, admin, pages, and shared
+
+/hooks → Custom React hooks
+
+/data → Dummy data or static resources
+
 Usage
-Start the backend server and ensure MongoDB is connected.
+Start the backend server and connect to MongoDB.
 
-Start the client with Next.js development server.
+Start the frontend with Next.js:
 
-Visit http://localhost:3000 to browse courses, read blogs, or login as admin.
+bash
+Copy code
+npm run dev
+Open http://localhost:3000 in your browser.
 
-Admin users can access the dashboard via /admin.
+Login as admin to access dashboard features.
 
 Future Enhancements
-Add payment integration for course enrollment
+Payment integration for courses
 
-Implement course ratings and reviews
+Course ratings and reviews
 
-Real-time notifications and messaging
+Real-time notifications and chat
 
 AI-based course recommendations
 
 License
-This project is open-source and available under the MIT License.
+This project is open-source under the MIT License.
 
 Contact
 GitHub Client: edu-mart-client
@@ -166,6 +196,6 @@ Copy code
 
 ---
 
-If you want, I can also make a **more visually appealing README** with **badges for features, screenshots, and tech stack icons** so it looks like a professional GitHub project page. This often helps recruiters or users immediately understand the project.  
+If you want, I can also make a **version with visual screenshots and badges for each feature**, so your GitHub repo looks **extremely professional and attractive**, which is perfect for portfolio presentation.  
 
 Do you want me to do that?
