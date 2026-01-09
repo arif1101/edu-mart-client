@@ -7,22 +7,8 @@ import { Button } from "@/components/ui/button";
 import { CourseProgressBar } from "./CourseProgressBar";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
-
-interface Instructor {
-  _id: string;
-  name: string;
-  photo?: string;
-  status: string;
-}
-
-interface Course {
-  _id: string;
-  title: string;
-  thumbnail?: string;
-  instructor?: Instructor | string; // Can be populated object or just string ID
-  price: number;
-  description?: string;
-}
+import { getMyEnrollments } from "@/lib/enrollment";
+import { Course } from "@/types/course";
 
 interface Enrollment {
   _id: string;
@@ -42,22 +28,8 @@ export default function CourseEnrolled() {
 
   const fetchEnrollments = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/enrollment/my-courses", {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to fetch enrollments");
-      }
-
-      const data = await res.json();
-      console.log("Enrollments:", data);
-      
-      setEnrollments(data.data || []);
+      const data = await getMyEnrollments();
+      setEnrollments(data);
     } catch (error: any) {
       console.error("Enrollment fetch error:", error);
       setError(error.message);
@@ -67,15 +39,18 @@ export default function CourseEnrolled() {
   };
 
   // Helper function to get instructor name
-  const getInstructorName = (instructor?: Instructor | string) => {
-    if (!instructor) return "EduTech BD";
-    if (typeof instructor === "string") return instructor;
-    return instructor.name || "EduTech BD";
+  const getInstructorName = (course: Course) => {
+    return course.instructor?.name || "EduTech BD";
   };
 
-  // Get all courses from all enrollments
-  const allCourses = enrollments.flatMap((enrollment) => 
-    enrollment.courses.filter(course => course !== null)
+  // Get unique courses from all enrollments
+  const allCourses = Array.from(
+    new Map(
+      enrollments
+        .flatMap((enrollment) => enrollment.courses)
+        .filter((course): course is Course => Boolean(course))
+        .map((course) => [course._id, course])
+    ).values()
   );
 
   if (loading) {
@@ -110,7 +85,9 @@ export default function CourseEnrolled() {
     return (
       <div className="my-12 px-4 md:px-0 max-w-6xl mx-auto">
         <div className="text-center py-20">
-          <h2 className="text-2xl font-semibold mb-4">No Courses Enrolled Yet</h2>
+          <h2 className="text-2xl font-semibold mb-4">
+            No Courses Enrolled Yet
+          </h2>
           <p className="text-muted-foreground mb-6">
             Start learning by enrolling in your first course!
           </p>
@@ -135,7 +112,9 @@ export default function CourseEnrolled() {
 
       {/* Total Courses Count */}
       <p className="text-lg text-muted-foreground mb-6">
-        You have enrolled in <span className="font-bold text-sky-600">{allCourses.length}</span> course{allCourses.length !== 1 ? 's' : ''}
+        You have enrolled in{" "}
+        <span className="font-bold text-sky-600">{allCourses.length}</span>{" "}
+        course{allCourses.length !== 1 ? "s" : ""}
       </p>
 
       {/* Courses Grid */}
@@ -163,12 +142,12 @@ export default function CourseEnrolled() {
               <h2 className="text-2xl font-semibold">{course.title}</h2>
 
               <p className="text-lg font-medium text-muted-foreground">
-                {getInstructorName(course.instructor)}
+                {getInstructorName(course)}
               </p>
 
-              {course.description && (
+              {course.overview?.description && (
                 <p className="text-sm text-muted-foreground line-clamp-2">
-                  {course.description}
+                  {course.overview.description}
                 </p>
               )}
 
