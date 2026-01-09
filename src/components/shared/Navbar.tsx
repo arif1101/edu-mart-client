@@ -5,6 +5,7 @@ import NavbarClient from "./NavbarClient";
 export default async function Navbar() {
   noStore();
   const user = await getAuthUser();
+  console.log("----------user-----------:", user)
 
   return <NavbarClient user={user} />;
 }

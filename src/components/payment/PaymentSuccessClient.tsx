@@ -1,16 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { CheckCircle, Loader2 } from "lucide-react";
+import { verifyPayment } from "@/lib/payment"; // ✅ Import server action
 
 export default function PaymentSuccessClient() {
   const searchParams = useSearchParams();
   const router = useRouter();
-
   const [status, setStatus] = useState<"loading" | "success" | "error">(
     "loading"
   );
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const paymentIntent = searchParams.get("payment_intent");
 
@@ -19,26 +21,26 @@ export default function PaymentSuccessClient() {
 
     const verify = async () => {
       if (!paymentIntent) {
-        if (isMounted) setStatus("error");
+        if (isMounted) {
+          setStatus("error");
+          setErrorMessage("Payment intent not found");
+        }
         return;
       }
 
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/payment/verify/${paymentIntent}`,
-          { credentials: "include" }
-        );
-
-        if (!isMounted) return;
-
-        if (res.ok) {
+        await verifyPayment(paymentIntent); // ✅ Use server action
+        
+        if (isMounted) {
           setStatus("success");
           setTimeout(() => router.push("/courses"), 3000);
-        } else {
-          setStatus("error");
         }
-      } catch {
-        if (isMounted) setStatus("error");
+      } catch (error: any) {
+        console.error("Payment verification error:", error);
+        if (isMounted) {
+          setStatus("error");
+          setErrorMessage(error.message || "Payment verification failed");
+        }
       }
     };
 
@@ -50,7 +52,6 @@ export default function PaymentSuccessClient() {
   }, [paymentIntent, router]);
 
   /* ---------------- UI STATES ---------------- */
-
   if (status === "loading") {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
@@ -65,9 +66,12 @@ export default function PaymentSuccessClient() {
       <div className="flex flex-col items-center justify-center min-h-screen">
         <div className="text-red-500 text-6xl mb-4">✕</div>
         <h1 className="text-2xl font-bold">Payment Failed</h1>
+        {errorMessage && (
+          <p className="text-gray-600 mt-2">{errorMessage}</p>
+        )}
         <button
           onClick={() => router.push("/cart")}
-          className="mt-6 bg-indigo-600 text-white px-6 py-2 rounded-lg"
+          className="mt-6 bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700"
         >
           Back to Cart
         </button>
@@ -79,9 +83,7 @@ export default function PaymentSuccessClient() {
     <div className="flex flex-col items-center justify-center min-h-screen">
       <CheckCircle className="text-green-500" size={80} />
       <h1 className="text-3xl font-bold mt-6">Payment Successful!</h1>
-      <p className="text-gray-600 mt-2">
-        Redirecting to your courses...
-      </p>
+      <p className="text-gray-600 mt-2">Redirecting to your courses...</p>
     </div>
   );
 }

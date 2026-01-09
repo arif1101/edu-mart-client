@@ -1,7 +1,15 @@
+// lib/course.ts
+"use server";
+
+import { cookies } from "next/headers";
+
+// Public courses (no auth needed)
 export async function getCourses() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/courses`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/courses`, { // ✅ Add parentheses
     cache: "no-store",
   });
+
+  console.log("----------courses11-------------", res)
 
   if (!res.ok) {
     throw new Error("Failed to fetch courses");
@@ -10,11 +18,11 @@ export async function getCourses() {
   return res.json();
 }
 
-// course.ts
+// Single course details (no auth needed)
 export async function getSingleCourse(id: string) {
-  console.log("--------checking for sngle course-------:", id)
+  console.log("--------checking for single course-------:", id);
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/courses/${id}`,
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/courses/${id}`, // ✅ Correct
     { cache: "no-store" }
   );
 
@@ -25,29 +33,30 @@ export async function getSingleCourse(id: string) {
   return res.json();
 }
 
+// Enrolled course with sections and lessons (auth required)
+export async function getEnrolledCourseWithSections(courseId: string) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("accessToken")?.value;
 
-// lib/course.ts
+  if (!token) {
+    throw new Error("Not authenticated");
+  }
 
-export async function getCoursePlayerData(courseId: string) {
-  // replace with real DB/API later
-  const sections = [
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/courses/${courseId}/full`, // ✅ Correct
     {
-      _id: "694ea0344cce9aacfb541abf",
-      title: "JavaScript Basics",
-      order: 0,
-    },
-  ];
+      method: "GET",
+      headers: {
+        Cookie: `accessToken=${token}`,
+      },
+      cache: "no-store",
+    }
+  );
 
-  const lessons = [
-    {
-      _id: "694ea4dabbb3d5db7cbf5812",
-      section: "694ea0344cce9aacfb541abf",
-      title: "JavaScript Introduction",
-      videoUrl: "https://www.youtube.com/embed/xpP5L1NuMQU?si=3RAXrQrzoP_Glktn",
-      order: 1,
-      isPreview: true,
-    },
-  ];
+  if (!res.ok) {
+    throw new Error("Failed to fetch course data");
+  }
 
-  return { sections, lessons };
+  const response = await res.json();
+  return response.data;
 }

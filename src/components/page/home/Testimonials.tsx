@@ -1,7 +1,7 @@
 import { testimonials } from "@/data/testimonials";
 export default function Testimonials() {
   return (
-    <div className="text-center mt-[100px]">
+    <div className="text-center mt-[100px] mb-24">
       <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-8 dark:text-white">
         Opinion <span className="text-sky-500">of Our</span> Pupils
       </h2>

@@ -7,8 +7,7 @@ import CourseHeader from "@/components/page/enrolledCourse/CourseHeader";
 import VideoPlayer from "@/components/page/enrolledCourse/VideoPlayer";
 import { Loader2 } from "lucide-react";
 import { Lesson, Section } from "@/types/course";
-
-
+import { getEnrolledCourseWithSections } from "@/lib/course"; // ✅ Import server action
 
 interface Course {
   _id: string;
@@ -19,8 +18,6 @@ interface Course {
     photo: string;
   };
 }
-
-
 
 export default function CoursePlayerClient({
   courseId,
@@ -33,23 +30,14 @@ export default function CoursePlayerClient({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  console.log("------------", courseId)
-
   useEffect(() => {
     fetchCourseData();
   }, [courseId]);
 
   const fetchCourseData = async () => {
     try {
-      const res = await fetch(
-        `http://localhost:5000/api/courses/${courseId}/full`,
-        { credentials: "include" }
-      );
-
-      if (!res.ok) throw new Error("Failed to fetch course data");
-
-      const response = await res.json();
-      const { course, sections } = response.data;
+      const data = await getEnrolledCourseWithSections(courseId); // ✅ Use server action
+      const { course, sections } = data;
 
       setCourse(course);
       setSections(sections);
@@ -58,6 +46,7 @@ export default function CoursePlayerClient({
         setCurrentLesson(sections[0].lessons[0]);
       }
     } catch (err: any) {
+      console.error("Course fetch error:", err);
       setError(err.message);
     } finally {
       setLoading(false);
@@ -68,17 +57,29 @@ export default function CoursePlayerClient({
     return (
       <div className="flex items-center justify-center min-h-screen">
         <Loader2 className="animate-spin text-sky-600" size={48} />
+        <p className="ml-3 text-muted-foreground">Loading course...</p>
       </div>
     );
   }
 
   if (error || !course) {
-    return <p className="text-center text-red-600">{error}</p>;
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <p className="text-center text-red-600 text-xl mb-4">
+          {error || "Course not found"}
+        </p>
+        <button
+          onClick={fetchCourseData}
+          className="bg-sky-600 text-white px-6 py-2 rounded-lg hover:bg-sky-700"
+        >
+          Try Again
+        </button>
+      </div>
+    );
   }
 
   const allLessons = sections.flatMap((s) => s.lessons);
 
-  // Handler to select a lesson
   const handleLessonSelect = (lesson: Lesson) => {
     setCurrentLesson(lesson);
   };
@@ -90,12 +91,11 @@ export default function CoursePlayerClient({
         {currentLesson && (
           <VideoPlayer lesson={currentLesson} allLessons={allLessons} />
         )}
-<CourseContent
-  sections={sections}
-  currentLessonId={currentLesson?._id}
-  onLessonSelect={(lesson) => setCurrentLesson(lesson)}
-/>
-
+        <CourseContent
+          sections={sections}
+          currentLessonId={currentLesson?._id}
+          onLessonSelect={(lesson) => setCurrentLesson(lesson)}
+        />
       </div>
     </div>
   );

@@ -20,7 +20,6 @@ const data = {
         { title: "Dashboard", url: "/admin" },
         { title: "Add Course", url: "/admin/add-course" },
         { title: "Edit Course", url: "/admin/edit-course" },
-        { title: "Add Blog", url: "/admin/add-blog" },
       ],
     },
   ],

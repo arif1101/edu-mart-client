@@ -1,56 +1,151 @@
-"use client"
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button } from "@/components/ui/button"
-import { useState } from "react"
-import { toast } from "sonner"
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { updateUserProfile } from "@/lib/user";
+import { toast } from "sonner";
+import { useTransition } from "react";
 
 interface EditProfileProps {
-  user: any
-  onCancel: () => void
-  onSave: (updatedUser: any) => void
+  user: any;
+  onCancel: () => void;
+  onSave: (updatedUser: any) => void;
 }
 
-export default function EditProfile({ user, onCancel, onSave }: EditProfileProps) {
-  const [formData, setFormData] = useState(user)
+export default function EditProfile({
+  user,
+  onCancel,
+  onSave,
+}: EditProfileProps) {
+  const [isPending, startTransition] = useTransition();
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-  }
+  async function handleSubmit(formData: FormData) {
+    startTransition(async () => {
+      try {
+        // Convert FormData to plain object
+        const payload: any = {};
+        formData.forEach((value, key) => {
+          if (value && value !== "") {
+            payload[key] = value;
+          }
+        });
 
-  const handleSubmit = () => {
-    onSave(formData)
-    toast.success("Profile updated successfully")
+        console.log("Submitting payload:", payload);
+
+        // Call server action with plain object
+        const updatedUser = await updateUserProfile(payload);
+
+        if (updatedUser) {
+          onSave(updatedUser);
+          toast.success("Profile updated successfully");
+        } else {
+          toast.error("Profile update failed");
+        }
+      } catch (error: any) {
+        console.error("Form submission error:", error);
+        toast.error(error.message || "Profile update failed");
+      }
+    });
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow space-y-4">
-      <div className="flex justify-between items-center">
-        <h3 className="text-lg font-semibold">Edit Profile</h3>
-        <Button variant="outline" onClick={onCancel}>
+    <form action={handleSubmit} className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold">Edit Profile</h2>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={onCancel}
+          disabled={isPending}
+        >
           Cancel
         </Button>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <input name="name" value={formData.name} onChange={handleChange} className="border rounded p-2" />
-        <input name="fatherName" value={formData.fatherName} onChange={handleChange} className="border rounded p-2" />
-        <input name="motherName" value={formData.motherName} onChange={handleChange} className="border rounded p-2" />
-        <input name="institute" value={formData.institute} onChange={handleChange} className="border rounded p-2" />
-        <input name="mobile" value={formData.mobile} onChange={handleChange} className="border rounded p-2" />
-        <input name="whatsapp" value={formData.whatsapp} onChange={handleChange} className="border rounded p-2" />
-        <input type="date" name="dob" value={formData.dob} onChange={handleChange} className="border rounded p-2" />
-        <input name="gender" value={formData.gender} onChange={handleChange} className="border rounded p-2" />
-        <input name="academicLevel" value={formData.academicLevel} onChange={handleChange} className="border rounded p-2" />
-        <input name="medium" value={formData.medium} onChange={handleChange} className="border rounded p-2" />
-        <textarea name="description" value={formData.description} onChange={handleChange} className="border rounded p-2 col-span-2" />
+      <div className="space-y-4">
+        {/* Name Field */}
+        <div>
+          <label htmlFor="name" className="block text-sm font-medium mb-1">
+            Name
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            defaultValue={user?.name || ""}
+            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={isPending}
+            required
+          />
+        </div>
+
+        {/* Phone Field */}
+        <div>
+          <label htmlFor="phone" className="block text-sm font-medium mb-1">
+            Phone
+          </label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            defaultValue={user?.phone || ""}
+            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={isPending}
+            placeholder="Enter phone number"
+          />
+        </div>
+
+        {/* Picture URL Field */}
+        <div>
+          <label htmlFor="picture" className="block text-sm font-medium mb-1">
+            Profile Picture URL
+          </label>
+          <input
+            type="url"
+            id="picture"
+            name="picture"
+            defaultValue={user?.picture || ""}
+            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={isPending}
+            placeholder="https://example.com/image.jpg"
+          />
+        </div>
+
+        {/* Address Field */}
+        <div>
+          <label htmlFor="address" className="block text-sm font-medium mb-1">
+            Address
+          </label>
+          <textarea
+            id="address"
+            name="address"
+            defaultValue={user?.address || ""}
+            rows={3}
+            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={isPending}
+            placeholder="Enter your address"
+          />
+        </div>
+
+        {/* Password Field */}
+        <div>
+          <label htmlFor="password" className="block text-sm font-medium mb-1">
+            New Password (leave blank to keep current)
+          </label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter new password"
+            disabled={isPending}
+          />
+        </div>
       </div>
 
-      <Button onClick={handleSubmit} className="w-full bg-sky-500 hover:bg-sky-600">
-        Save Changes
+      <Button type="submit" className="w-full" disabled={isPending}>
+        {isPending ? "Saving..." : "Save Changes"}
       </Button>
-    </div>
-  )
+    </form>
+  );
 }

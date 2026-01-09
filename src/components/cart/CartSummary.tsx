@@ -1,30 +1,31 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+
 import { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./CheckoutForm";
+import { createPaymentIntent } from "@/lib/payment"; // ✅ Import server action
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+);
 
 export default function CartSummary({ subtotal }: any) {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleCheckout = async () => {
     setLoading(true);
+    setError(null);
+    
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/payment/create-intent`,
-        {
-          method: "POST",
-          credentials: "include",
-        }
-      );
-      const data = await res.json();
-      setClientSecret(data.clientSecret);
-    } catch (error) {
+      const secret = await createPaymentIntent(); // ✅ Use server action
+      setClientSecret(secret);
+    } catch (error: any) {
       console.error("Payment intent error:", error);
+      setError(error.message || "Failed to initiate checkout");
     } finally {
       setLoading(false);
     }
@@ -33,7 +34,7 @@ export default function CartSummary({ subtotal }: any) {
   return (
     <div className="bg-white dark:bg-gray-900 border rounded-2xl p-6 sticky top-4">
       <h2 className="text-xl font-bold mb-4">Order Summary</h2>
-      
+
       <div className="space-y-3 mb-6">
         <div className="flex justify-between">
           <span className="text-gray-600">Subtotal</span>
@@ -44,6 +45,12 @@ export default function CartSummary({ subtotal }: any) {
           <span>৳ {subtotal}</span>
         </div>
       </div>
+
+      {error && (
+        <div className="text-red-500 text-sm mb-4 p-3 bg-red-50 rounded">
+          {error}
+        </div>
+      )}
 
       {!clientSecret ? (
         <button

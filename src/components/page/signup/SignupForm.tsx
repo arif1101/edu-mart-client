@@ -14,9 +14,7 @@ export default function SignupForm() {
 
     if (!state.success) {
       toast.error(state.message);
-    }
-
-    if (state.success) {
+    } else {
       toast.success("Registration successful. Please log in.");
       router.push("/login");
     }
@@ -28,6 +26,7 @@ export default function SignupForm() {
         name="name"
         placeholder="Full name"
         required
+        className="w-full px-4 py-2 border rounded-md outline-none focus:ring-2 focus:ring-sky-500"
       />
 
       <input
@@ -35,6 +34,7 @@ export default function SignupForm() {
         type="email"
         placeholder="Email"
         required
+        className="w-full px-4 py-2 border rounded-md outline-none focus:ring-2 focus:ring-sky-500"
       />
 
       <input
@@ -42,9 +42,15 @@ export default function SignupForm() {
         type="password"
         placeholder="Password"
         required
+        className="w-full px-4 py-2 border rounded-md outline-none focus:ring-2 focus:ring-sky-500"
       />
 
-      <button type="submit">Register</button>
+      <button
+        type="submit"
+        className="w-full bg-sky-500 text-white py-2 rounded-md hover:bg-sky-600 transition"
+      >
+        Register
+      </button>
     </form>
   );
 }

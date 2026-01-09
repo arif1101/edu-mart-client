@@ -41,11 +41,6 @@ export default function ProfileSidebar({
     { label: "Cart", href: "/cart", icon: ShoppingCart },
     { label: "My Profile", href: "/user-profile", icon: User },
     { label: "Enrolled Courses", href: "/enrolled", icon: BookOpen },
-    { label: "Purchased Books", href: "/books/purchased", icon: Book },
-    { label: "Saved Resources", href: "/resources/saved", icon: FileText },
-    { label: "Participated Exams", href: "/exams/participated", icon: AlertCircle },
-    { label: "Calendar", href: "/calendar", icon: Calendar },
-    { label: "Order History", href: "/orders", icon: ListOrdered },
     { label: "Admin Panel", href: "/admin", icon: Settings },
   ];
 
@@ -97,17 +92,6 @@ export default function ProfileSidebar({
               );
             })}
           </nav>
-
-          <Button
-            onClick={() => {
-              onLogout();
-              onClose();
-            }}
-            className="w-full bg-red-500 text-white"
-          >
-            <LogOut className="w-4 h-4 mr-2" />
-            Log Out
-          </Button>
         </div>
       </aside>
     </>
