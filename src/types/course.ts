@@ -45,6 +45,7 @@ export interface Course {
   tags: string[];
   reviews: any[];
 
+  isPublished?: boolean;
   lastUpdate: string;
   createdAt: string;
   updatedAt: string;
