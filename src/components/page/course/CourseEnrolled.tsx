@@ -5,101 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { CourseProgressBar } from "./CourseProgressBar";
-import { useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
-import { getMyEnrollments } from "@/lib/enrollment";
-import { Course } from "@/types/course";
-
-interface Enrollment {
-  _id: string;
-  courses: Course[];
-  amount: number;
-  createdAt: string;
-}
+import { mockCourses } from "@/data/mockData";
 
 export default function CourseEnrolled() {
-  const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetchEnrollments();
-  }, []);
-
-  const fetchEnrollments = async () => {
-    try {
-      const data = await getMyEnrollments();
-      setEnrollments(data);
-    } catch (error: any) {
-      console.error("Enrollment fetch error:", error);
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Helper function to get instructor name
-  const getInstructorName = (course: Course) => {
-    return course.instructor?.name || "EduTech BD";
-  };
-
-  // Get unique courses from all enrollments
-  const allCourses = Array.from(
-    new Map(
-      enrollments
-        .flatMap((enrollment) => enrollment.courses)
-        .filter((course): course is Course => Boolean(course))
-        .map((course) => [course._id, course])
-    ).values()
-  );
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="animate-spin text-sky-600" size={48} />
-        <p className="ml-3 text-muted-foreground">Loading your courses...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="my-12 px-4 md:px-0 max-w-6xl mx-auto">
-        <div className="text-center py-20">
-          <h2 className="text-2xl font-semibold mb-4 text-red-600">
-            Error Loading Courses
-          </h2>
-          <p className="text-muted-foreground mb-6">{error}</p>
-          <Button
-            onClick={fetchEnrollments}
-            className="rounded-full px-6 py-3 bg-sky-600 hover:bg-sky-700"
-          >
-            Try Again
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
-  if (allCourses.length === 0) {
-    return (
-      <div className="my-12 px-4 md:px-0 max-w-6xl mx-auto">
-        <div className="text-center py-20">
-          <h2 className="text-2xl font-semibold mb-4">
-            No Courses Enrolled Yet
-          </h2>
-          <p className="text-muted-foreground mb-6">
-            Start learning by enrolling in your first course!
-          </p>
-          <Link href="/courses">
-            <Button className="rounded-full px-6 py-3 bg-sky-600 hover:bg-sky-700">
-              Browse Courses
-            </Button>
-          </Link>
-        </div>
-      </div>
-    );
-  }
+  const allCourses = mockCourses;
 
   return (
     <div className="my-12 px-4 md:px-0 max-w-6xl mx-auto">
@@ -114,7 +23,7 @@ export default function CourseEnrolled() {
       <p className="text-lg text-muted-foreground mb-6">
         You have enrolled in{" "}
         <span className="font-bold text-sky-600">{allCourses.length}</span>{" "}
-        course{allCourses.length !== 1 ? "s" : ""}
+        courses
       </p>
 
       {/* Courses Grid */}
@@ -127,10 +36,7 @@ export default function CourseEnrolled() {
             {/* Thumbnail */}
             <div className="relative w-full md:w-[368px] h-[220px] flex-shrink-0">
               <Image
-                src={
-                  course.thumbnail ||
-                  "https://i.ibb.co.com/nM8qXWfD/17538409-5870491.jpg"
-                }
+                src={course.thumbnail}
                 alt={course.title}
                 fill
                 className="rounded-2xl object-cover"
@@ -142,7 +48,7 @@ export default function CourseEnrolled() {
               <h2 className="text-2xl font-semibold">{course.title}</h2>
 
               <p className="text-lg font-medium text-muted-foreground">
-                {getInstructorName(course)}
+                {course.instructor?.name || "Instructor"}
               </p>
 
               {course.overview?.description && (
@@ -161,7 +67,7 @@ export default function CourseEnrolled() {
                   </Button>
                 </Link>
 
-                <Link href={`/course/${course._id}`}>
+                <Link href={`/courses/${course._id}`}>
                   <Button
                     variant="secondary"
                     className="rounded-full px-6 py-6 text-base"

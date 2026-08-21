@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   GraduationCap,
   DollarSign,
@@ -10,8 +10,6 @@ import {
   Star,
   Activity,
 } from "lucide-react";
-import { getAdminDashboard } from "@/lib/adminDashboard";
-
 
 /* -------------------- Stat Card -------------------- */
 type StatCardProps = {
@@ -22,7 +20,7 @@ type StatCardProps = {
 };
 
 const StatCard = ({ title, value, icon: Icon, iconColor }: StatCardProps) => (
-  <div className="bg-white rounded-2xl p-6 shadow-sm">
+  <div className="bg-white rounded-2xl p-6 shadow-sm border">
     <div className="flex items-start justify-between mb-3">
       <p className="text-gray-500 text-sm font-medium">{title}</p>
       <Icon className={`w-5 h-5 ${iconColor}`} />
@@ -38,7 +36,7 @@ const EnrollmentChart = ({ data }: any) => {
   const max = Math.max(...data.map((d: any) => d.enrolled), 1);
 
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-sm">
+    <div className="bg-white rounded-2xl p-6 shadow-sm border">
       <h2 className="text-lg font-semibold mb-6">
         Student Enrollment Trend
       </h2>
@@ -51,7 +49,7 @@ const EnrollmentChart = ({ data }: any) => {
               style={{ height: `${(item.enrolled / max) * 100}%` }}
             />
             <span className="text-xs mt-2 text-gray-500">
-              {item._id.month}/{item._id.year}
+              {item.month}
             </span>
           </div>
         ))}
@@ -67,7 +65,7 @@ const CoursePopularityChart = ({ data }: any) => {
   const max = Math.max(...data.map((d: any) => d.value), 1);
 
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-sm">
+    <div className="bg-white rounded-2xl p-6 shadow-sm border">
       <h2 className="text-lg font-semibold mb-6">Course Popularity</h2>
 
       <div className="space-y-4">
@@ -75,7 +73,7 @@ const CoursePopularityChart = ({ data }: any) => {
           <div key={i}>
             <div className="flex justify-between mb-1 text-sm">
               <span>{course.name}</span>
-              <span>{course.value}</span>
+              <span>{course.value} enrolled</span>
             </div>
             <div className="h-2 bg-gray-200 rounded">
               <div
@@ -92,30 +90,32 @@ const CoursePopularityChart = ({ data }: any) => {
 
 /* -------------------- Main Page -------------------- */
 export default function AdminDashboardPage() {
-  const [data, setData] = useState<any>(null);
-  const [error, setError] = useState<string | null>(null);
+  const stats = {
+    activeCourses: 24,
+    totalRevenue: "৳ 145,000",
+    enrolledStudents: 1280,
+    totalBooks: 15,
+    avgCourseRating: 4.8,
+    totalStudents: 3400,
+  };
 
-  useEffect(() => {
-    getAdminDashboard()
-      .then(setData)
-      .catch((err) => {
-        console.error(err);
-        setError(err.message);
-      });
-  }, []);
-
-  if (error) {
-    return <p className="text-red-500 p-6">{error}</p>;
-  }
-
-  if (!data) {
-    return <p className="p-6">Loading dashboard...</p>;
-  }
-
-  const { stats, charts } = data;
+  const charts = {
+    enrollmentTrend: [
+      { month: "Jan", enrolled: 120 },
+      { month: "Feb", enrolled: 190 },
+      { month: "Mar", enrolled: 300 },
+      { month: "Apr", enrolled: 250 },
+      { month: "May", enrolled: 410 },
+    ],
+    coursePopularity: [
+      { name: "Web Development Bootcamp", value: 450 },
+      { name: "React & Next.js Masterclass", value: 320 },
+      { name: "Figma UI/UX Essentials", value: 280 },
+    ],
+  };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-[1600px] mx-auto space-y-6">
 
         {/* Stats */}

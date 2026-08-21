@@ -1,47 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useState } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
 
 export default function SectionsPage() {
-  const { courseId } = useParams<{ courseId: string }>();
   const [title, setTitle] = useState("");
-  const [sections, setSections] = useState([]);
+  const [sections, setSections] = useState<any[]>([
+    { _id: "sec-1", title: "Introduction & Setup" },
+    { _id: "sec-2", title: "Core Concepts" },
+  ]);
 
-  const loadSections = async () => {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/sections/course/${courseId}`
-    );
-    const data = await res.json();
-    setSections(data.data || []);
-  };
-
-  useEffect(() => {
-    loadSections();
-  }, []);
-
-  const addSection = async () => {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL}/sections/create`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          course: courseId,
-          title,
-          order: sections.length + 1,
-        }),
-      }
-    );
-
-    if (!res.ok) return toast.error("Failed to add section");
-
-    toast.success("Section added");
+  const addSection = () => {
+    if (!title.trim()) return;
+    const newSec = { _id: `sec-${Date.now()}`, title };
+    setSections([...sections, newSec]);
+    toast.success("Section added (UI Mode)");
     setTitle("");
-    loadSections();
   };
 
   return (
@@ -50,22 +26,22 @@ export default function SectionsPage() {
 
       <input
         placeholder="Section title"
-        className="border p-2 w-full"
+        className="border p-2 w-full rounded"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
 
-      <button className="bg-black text-white p-2 w-full" onClick={addSection}>
+      <button className="bg-black text-white p-2 w-full rounded hover:bg-gray-800 cursor-pointer" onClick={addSection}>
         Add Section
       </button>
 
       {sections.map((section: any) => (
-        <div key={section._id} className="border p-3">
-          <p>{section.title}</p>
+        <div key={section._id} className="border p-3 rounded flex justify-between items-center bg-white">
+          <p className="font-medium">{section.title}</p>
 
           <Link
             href={`/admin/sections/${section._id}/lessons`}
-            className="text-blue-600"
+            className="text-blue-600 hover:underline text-sm"
           >
             Manage Lessons →
           </Link>

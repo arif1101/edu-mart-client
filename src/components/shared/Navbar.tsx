@@ -1,11 +1,6 @@
-import { unstable_noStore as noStore } from "next/cache";
-import { getAuthUser } from "@/app/_action/auth";
+import { mockUser } from "@/data/mockData";
 import NavbarClient from "./NavbarClient";
 
-export default async function Navbar() {
-  noStore();
-  const user = await getAuthUser();
-  console.log("----------user-----------:", user)
-
-  return <NavbarClient user={user} />;
+export default function Navbar() {
+  return <NavbarClient user={mockUser} />;
 }

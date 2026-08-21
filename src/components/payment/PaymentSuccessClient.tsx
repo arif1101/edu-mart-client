@@ -1,83 +1,17 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
-import { CheckCircle, Loader2 } from "lucide-react";
-import { verifyPayment } from "@/lib/payment"; // ✅ Import server action
+import { useRouter } from "next/navigation";
+import { CheckCircle } from "lucide-react";
 
 export default function PaymentSuccessClient() {
-  const searchParams = useSearchParams();
   const router = useRouter();
-  const [status, setStatus] = useState<"loading" | "success" | "error">(
-    "loading"
-  );
-  const [errorMessage, setErrorMessage] = useState<string>("");
-
-  const paymentIntent = searchParams.get("payment_intent");
+  const [status] = useState<"loading" | "success" | "error">("success");
 
   useEffect(() => {
-    let isMounted = true;
-
-    const verify = async () => {
-      if (!paymentIntent) {
-        if (isMounted) {
-          setStatus("error");
-          setErrorMessage("Payment intent not found");
-        }
-        return;
-      }
-
-      try {
-        await verifyPayment(paymentIntent); // ✅ Use server action
-        
-        if (isMounted) {
-          setStatus("success");
-          setTimeout(() => router.push("/courses"), 3000);
-        }
-      } catch (error: any) {
-        console.error("Payment verification error:", error);
-        if (isMounted) {
-          setStatus("error");
-          setErrorMessage(error.message || "Payment verification failed");
-        }
-      }
-    };
-
-    verify();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [paymentIntent, router]);
-
-  /* ---------------- UI STATES ---------------- */
-  if (status === "loading") {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen">
-        <Loader2 className="animate-spin text-indigo-600" size={48} />
-        <p className="mt-4 text-gray-600">Verifying payment...</p>
-      </div>
-    );
-  }
-
-  if (status === "error") {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen">
-        <div className="text-red-500 text-6xl mb-4">✕</div>
-        <h1 className="text-2xl font-bold">Payment Failed</h1>
-        {errorMessage && (
-          <p className="text-gray-600 mt-2">{errorMessage}</p>
-        )}
-        <button
-          onClick={() => router.push("/cart")}
-          className="mt-6 bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700"
-        >
-          Back to Cart
-        </button>
-      </div>
-    );
-  }
+    const timer = setTimeout(() => router.push("/courses"), 3000);
+    return () => clearTimeout(timer);
+  }, [router]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">

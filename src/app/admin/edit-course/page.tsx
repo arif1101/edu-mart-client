@@ -1,23 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
-import { deleteCourse } from "@/lib/course";
+import { mockCourses } from "@/data/mockData";
 
 export default function EditCoursePage() {
-  const [courses, setCourses] = useState<any[]>([]);
-  const [loadingId, setLoadingId] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/courses`, {
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => setCourses(data.data || []))
-      .catch(() => toast.error("Failed to load courses"));
-  }, []);
+  const [courses, setCourses] = useState<any[]>(mockCourses);
 
   const confirmDelete = (courseId: string) => {
     toast("Delete this course?", {
@@ -33,56 +23,41 @@ export default function EditCoursePage() {
     });
   };
 
-const handleDelete = async (courseId: string) => {
-  if (loadingId) return;
-
-  setLoadingId(courseId);
-  const toastId = toast.loading("Deleting course...");
-
-  try {
-    await deleteCourse(courseId);
-
-    setCourses((prev) =>
-      prev.filter((course) => course._id !== courseId)
-    );
-
-    toast.success("Course deleted successfully", { id: toastId });
-  } catch (error: any) {
-    toast.error(error.message || "Something went wrong", { id: toastId });
-  } finally {
-    setLoadingId(null);
-  }
-};
-
+  const handleDelete = (courseId: string) => {
+    setCourses((prev) => prev.filter((course) => (course._id || course.id) !== courseId));
+    toast.success("Course deleted successfully (UI Mode)");
+  };
 
   return (
     <div className="space-y-4">
       <h1 className="text-2xl font-bold">Courses</h1>
 
-      {courses.map((course) => (
-        <div
-          key={course._id}
-          className="border p-4 flex items-center justify-between"
-        >
-          <div>
-            <h3 className="font-semibold">{course.title}</h3>
-            <Link
-              href={`/admin/course/${course._id}/sections`}
-              className="text-blue-600 text-sm"
-            >
-              Manage Sections →
-            </Link>
-          </div>
-
-          <button
-            onClick={() => confirmDelete(course._id)}
-            disabled={loadingId === course._id}
-            className="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700 disabled:opacity-50"
+      {courses.map((course) => {
+        const id = course._id || course.id;
+        return (
+          <div
+            key={id}
+            className="border p-4 flex items-center justify-between rounded bg-white"
           >
-            {loadingId === course._id ? "Deleting..." : "Delete"}
-          </button>
-        </div>
-      ))}
+            <div>
+              <h3 className="font-semibold">{course.title}</h3>
+              <Link
+                href={`/admin/course/${id}/sections`}
+                className="text-blue-600 text-sm hover:underline"
+              >
+                Manage Sections →
+              </Link>
+            </div>
+
+            <button
+              onClick={() => confirmDelete(id)}
+              className="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700 cursor-pointer"
+            >
+              Delete
+            </button>
+          </div>
+        );
+      })}
     </div>
   );
 }

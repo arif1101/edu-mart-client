@@ -12,9 +12,7 @@ import {
   User,
   Video,
 } from "lucide-react";
-import { useEffect, useState } from "react";
-import { addCourseToCart, getCart } from "@/lib/cart";
-import { getMyEnrollments } from "@/lib/enrollment";
+import { useState } from "react";
 import { Course } from "@/types/course";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -25,60 +23,15 @@ type Props = {
 
 export default function CourseDetails({ course }: Props) {
   const [showModal, setShowModal] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
-  const [isEnrolled, setIsEnrolled] = useState(false);
-  const [checking, setChecking] = useState(true);
+  const [isEnrolled] = useState(false);
 
-  useEffect(() => {
-    checkCourseStatus();
-  }, [course._id]);
-
-  const checkCourseStatus = async () => {
-    try {
-      // Check cart
-      const cart = await getCart();
-      const inCart = cart?.items?.some(
-        (item: any) =>
-          item.course === course._id || item.course?._id === course._id
-      );
-      setIsInCart(inCart);
-
-      // Check enrollments
-      const enrollments = await getMyEnrollments();
-      const enrolled = enrollments.some((enrollment: any) =>
-        enrollment.courses?.some((c: any) => c?._id === course._id)
-      );
-      setIsEnrolled(enrolled);
-    } catch (error) {
-      console.error("Error checking course status:", error);
-    } finally {
-      setChecking(false);
-    }
+  const handleEnroll = () => {
+    setIsInCart(true);
+    toast.success("Course added to cart successfully");
   };
 
-  const handleEnroll = async () => {
-    if (isInCart) {
-      toast.error("Course is already in your cart!");
-      return;
-    }
-
-    if (isEnrolled) {
-      toast.error("You are already enrolled in this course!");
-      return;
-    }
-
-    try {
-      setLoading(true);
-      await addCourseToCart(course._id);
-      setIsInCart(true);
-      toast.success("Course added to cart successfully");
-    } catch (error: any) {
-      toast.error("Failed to add course to cart");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const courseId = course._id;
 
   return (
     <div className="pt-6 container mx-auto mb-24">
@@ -94,13 +47,13 @@ export default function CourseDetails({ course }: Props) {
           <h3>
             Last update{" "}
             {new Date(
-              course.lastUpdate || course.updatedAt
+              course.lastUpdate || course.updatedAt || Date.now()
             ).toLocaleDateString()}
           </h3>
         </div>
         <div className="flex items-center gap-2">
           <Network />
-          <h3 className="text-purple-500 font-bold">{course.level}</h3>
+          <h3 className="text-purple-500 font-bold">{course.level || "All Levels"}</h3>
         </div>
       </div>
 
@@ -116,13 +69,13 @@ export default function CourseDetails({ course }: Props) {
         </div>
 
         {/* Right */}
-        <div className="w-1/3 sticky top-6 shadow-md bg-white rounded-xl p-6 border">
+        <div className="w-1/3 sticky top-6 shadow-md bg-white dark:bg-gray-900 rounded-xl p-6 border">
           <div
             className="relative h-48 flex items-center justify-center cursor-pointer rounded-md bg-cover bg-center"
             style={{ backgroundImage: `url(${course.thumbnail})` }}
             onClick={() => setShowModal(true)}
           >
-            <Play className="text-4xl z-10" />
+            <Play className="text-4xl z-10 text-white" />
           </div>
 
           <div className="mt-6">
@@ -130,7 +83,7 @@ export default function CourseDetails({ course }: Props) {
 
             {/* Show different buttons based on status */}
             {isEnrolled ? (
-              <Link href={`/enrolled/${course._id}`}>
+              <Link href={`/enrolled/${courseId}`}>
                 <Button className="w-full mb-4 bg-green-600 hover:bg-green-700">
                   Go to Course
                 </Button>
@@ -143,15 +96,10 @@ export default function CourseDetails({ course }: Props) {
               </Link>
             ) : (
               <Button
-                className="w-full mb-4 bg-sky-500 hover:bg-sky-600 disabled:opacity-50"
+                className="w-full mb-4 bg-sky-500 hover:bg-sky-600 cursor-pointer"
                 onClick={handleEnroll}
-                disabled={loading || checking}
               >
-                {checking
-                  ? "Checking..."
-                  : loading
-                  ? "Adding..."
-                  : "Enroll Now"}
+                Enroll Now
               </Button>
             )}
 
@@ -179,7 +127,7 @@ export default function CourseDetails({ course }: Props) {
           <div className="bg-white p-4 rounded-lg max-w-3xl w-full relative">
             <button
               onClick={() => setShowModal(false)}
-              className="absolute top-2 right-2 text-xl font-bold"
+              className="absolute top-2 right-2 text-xl font-bold cursor-pointer"
             >
               ×
             </button>

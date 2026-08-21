@@ -1,6 +1,5 @@
-
 import CourseDetails from "@/components/page/course/CourseDetails";
-import { getSingleCourse } from "@/lib/course";
+import { mockCourses } from "@/data/mockData";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -8,10 +7,7 @@ type PageProps = {
 
 export default async function CourseDetailsPage({ params }: PageProps) {
   const { id } = await params;
-  const course = await getSingleCourse(id);
-  // console.log("-------from course detailspage ------", course)
+  const course = mockCourses.find((c) => c._id === id) || mockCourses[0];
 
-  return <CourseDetails course={course.data} />;
+  return <CourseDetails course={course} />;
 }
-
-

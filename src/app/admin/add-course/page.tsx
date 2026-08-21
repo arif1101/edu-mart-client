@@ -5,7 +5,6 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { CourseFormType, CourseZodSchema } from "@/schema/course.schema";
-import { createCourse } from "@/lib/course";
 
 export default function AddCoursePage() {
   const {
@@ -43,15 +42,10 @@ export default function AddCoursePage() {
     name: "curriculum",
   });
 
-const onSubmit = async (data: CourseFormType) => {
-  try {
-    await createCourse(data);
-    toast.success("Course created successfully");
-  } catch (err: any) {
-    toast.error(err.message || "Something went wrong");
-  }
-};
-
+  const onSubmit = (data: CourseFormType) => {
+    console.log("Course Form Data:", data);
+    toast.success("Course created successfully (UI Mode)");
+  };
 
   const toStringArray = (v: unknown): string[] => {
     if (Array.isArray(v)) return v;
@@ -74,18 +68,18 @@ const onSubmit = async (data: CourseFormType) => {
       <input
         {...register("title")}
         placeholder="Title"
-        className="border p-2 w-full"
+        className="border p-2 w-full rounded"
       />
       <p className="text-red-500">{errors.title?.message}</p>
 
       <input
         {...register("subject")}
         placeholder="Subject"
-        className="border p-2 w-full"
+        className="border p-2 w-full rounded"
       />
 
       {/* ENUMS */}
-      <select {...register("category")} className="border p-2 w-full">
+      <select {...register("category")} className="border p-2 w-full rounded">
         {["Academic", "Technology", "Business", "Arts", "Language"].map((v) => (
           <option key={v} value={v}>
             {v}
@@ -93,17 +87,17 @@ const onSubmit = async (data: CourseFormType) => {
         ))}
       </select>
 
-      <select {...register("language")} className="border p-2 w-full">
+      <select {...register("language")} className="border p-2 w-full rounded">
         <option value="English">English</option>
         <option value="Bangla">Bangla</option>
       </select>
 
-      <select {...register("classLevel")} className="border p-2 w-full">
+      <select {...register("classLevel")} className="border p-2 w-full rounded">
         <option value="Class 11-12">Class 11-12</option>
         <option value="Versity">Versity</option>
       </select>
 
-      <select {...register("level")} className="border p-2 w-full">
+      <select {...register("level")} className="border p-2 w-full rounded">
         <option value="Beginner">Beginner</option>
         <option value="Intermediate">Intermediate</option>
         <option value="Advanced">Advanced</option>
@@ -114,25 +108,25 @@ const onSubmit = async (data: CourseFormType) => {
         type="number"
         {...register("duration", { valueAsNumber: true })}
         placeholder="Duration (hours)"
-        className="border p-2 w-full"
+        className="border p-2 w-full rounded"
       />
       <input
         type="number"
         {...register("price", { valueAsNumber: true })}
         placeholder="Price (optional)"
-        className="border p-2 w-full"
+        className="border p-2 w-full rounded"
       />
 
       {/* MEDIA */}
       <input
         {...register("thumbnail")}
         placeholder="Thumbnail URL"
-        className="border p-2 w-full"
+        className="border p-2 w-full rounded"
       />
 
       <input
         placeholder="Tags (comma separated)"
-        className="border p-2 w-full"
+        className="border p-2 w-full rounded"
         {...register("tags", {
           setValueAs: toStringArray,
         })}
@@ -143,40 +137,40 @@ const onSubmit = async (data: CourseFormType) => {
       <input
         {...register("instructor.name")}
         placeholder="Name"
-        className="border p-2 w-full"
+        className="border p-2 w-full rounded"
       />
       <input
         {...register("instructor.photo")}
         placeholder="Photo URL"
-        className="border p-2 w-full"
+        className="border p-2 w-full rounded"
       />
       <input
         {...register("instructor.status")}
         placeholder="Status"
-        className="border p-2 w-full"
+        className="border p-2 w-full rounded"
       />
 
       {/* MULTIPLE INSTRUCTORS */}
       <h2 className="font-semibold">Other Instructors</h2>
 
       {instructorsArray.fields.map((field, index) => (
-        <div key={field.id} className="border p-4 space-y-2">
+        <div key={field.id} className="border p-4 space-y-2 rounded">
           <input
             {...register(`instructors.${index}.name`)}
             placeholder="Name"
-            className="border p-2 w-full"
+            className="border p-2 w-full rounded"
           />
           <input
             {...register(`instructors.${index}.photo`)}
             placeholder="Photo URL"
-            className="border p-2 w-full"
+            className="border p-2 w-full rounded"
           />
           <input
             {...register(`instructors.${index}.status`)}
             placeholder="Status"
-            className="border p-2 w-full"
+            className="border p-2 w-full rounded"
           />
-          <button type="button" onClick={() => instructorsArray.remove(index)}>
+          <button type="button" onClick={() => instructorsArray.remove(index)} className="text-red-500 text-sm">
             Remove
           </button>
         </div>
@@ -185,6 +179,7 @@ const onSubmit = async (data: CourseFormType) => {
       <button
         type="button"
         onClick={() => instructorsArray.append({ name: "" })}
+        className="text-blue-500 text-sm font-medium"
       >
         + Add Instructor
       </button>
@@ -195,12 +190,12 @@ const onSubmit = async (data: CourseFormType) => {
       <textarea
         {...register("overview.description")}
         placeholder="Description"
-        className="border p-2 w-full"
+        className="border p-2 w-full rounded"
       />
 
       <textarea
         placeholder="What you will learn (comma separated)"
-        className="border p-2 w-full"
+        className="border p-2 w-full rounded"
         {...register("overview.whatYouWillLearn", {
           setValueAs: toStringArray,
         })}
@@ -208,7 +203,7 @@ const onSubmit = async (data: CourseFormType) => {
 
       <textarea
         placeholder="Requirements (comma separated)"
-        className="border p-2 w-full"
+        className="border p-2 w-full rounded"
         {...register("overview.requirements", {
           setValueAs: toStringArray,
         })}
@@ -216,7 +211,7 @@ const onSubmit = async (data: CourseFormType) => {
 
       <textarea
         placeholder="This course includes (comma separated)"
-        className="border p-2 w-full"
+        className="border p-2 w-full rounded"
         {...register("overview.thisCourseIncludes", {
           setValueAs: toStringArray,
         })}
@@ -226,22 +221,22 @@ const onSubmit = async (data: CourseFormType) => {
       <h2 className="font-semibold">Curriculum</h2>
 
       {curriculumArray.fields.map((field, index) => (
-        <div key={field.id} className="border p-4 space-y-2">
+        <div key={field.id} className="border p-4 space-y-2 rounded">
           <input
             {...register(`curriculum.${index}.title`)}
             placeholder="Section title"
-            className="border p-2 w-full"
+            className="border p-2 w-full rounded"
           />
 
           <textarea
             placeholder="Contents (comma separated)"
-            className="border p-2 w-full"
+            className="border p-2 w-full rounded"
             {...register(`curriculum.${index}.contents`, {
               setValueAs: toStringArray,
             })}
           />
 
-          <button type="button" onClick={() => curriculumArray.remove(index)}>
+          <button type="button" onClick={() => curriculumArray.remove(index)} className="text-red-500 text-sm">
             Remove Section
           </button>
         </div>
@@ -250,11 +245,12 @@ const onSubmit = async (data: CourseFormType) => {
       <button
         type="button"
         onClick={() => curriculumArray.append({ title: "", contents: [""] })}
+        className="text-blue-500 text-sm font-medium"
       >
         + Add Curriculum Section
       </button>
 
-      <button type="submit" className="bg-black text-white px-4 py-2 w-full">
+      <button type="submit" className="bg-black text-white px-4 py-2 w-full rounded hover:bg-gray-800 cursor-pointer">
         Create Course
       </button>
     </form>

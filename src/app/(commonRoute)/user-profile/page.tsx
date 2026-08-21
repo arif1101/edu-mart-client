@@ -1,13 +1,10 @@
-import { getAuthUser } from "@/app/_action/auth";
+import { mockUser } from "@/data/mockData";
 import Profile from "@/components/page/user/Profile";
 
-export default async function UserProfilePage() {
-
-    const user = await getAuthUser()
-    
+export default function UserProfilePage() {
   return (
     <div className="container mx-auto">
-      <Profile user={user}/>
+      <Profile user={mockUser} />
     </div>
-  )
+  );
 }

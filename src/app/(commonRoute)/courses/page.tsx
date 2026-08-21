@@ -1,12 +1,10 @@
 import CoursesClient from "@/components/page/course/CoursesClient";
-import { getCourses } from "@/lib/course";
+import { mockCourses } from "@/data/mockData";
 
-export default async function CoursesPage() {
-  const courses = await getCourses(); // server-side
-  
+export default function CoursesPage() {
   return (
     <div className="container mx-auto">
-      <CoursesClient courses={courses.data} />
+      <CoursesClient courses={mockCourses} />
     </div>
   );
-} 
+}

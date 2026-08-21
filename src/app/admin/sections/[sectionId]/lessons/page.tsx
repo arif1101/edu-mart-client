@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,7 +11,10 @@ import { LessonFormType, LessonZodSchema } from "@/schema/lesson.schema";
 
 export default function LessonsPage() {
   const { sectionId } = useParams<{ sectionId: string }>();
-  const [lessons, setLessons] = useState<any[]>([]);
+  const [lessons, setLessons] = useState<any[]>([
+    { _id: "les-1", title: "Welcome & Setup", videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4", isPreview: true },
+    { _id: "les-2", title: "Project Structure", videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4", isPreview: false },
+  ]);
 
   const {
     register,
@@ -21,7 +24,7 @@ export default function LessonsPage() {
   } = useForm<LessonFormType>({
     resolver: zodResolver(LessonZodSchema),
     defaultValues: {
-      section: sectionId,
+      section: sectionId || "",
       title: "",
       videoUrl: "",
       order: 0,
@@ -29,77 +32,22 @@ export default function LessonsPage() {
     },
   });
 
-  /**
-   * Load lessons safely inside useEffect
-   * (React-recommended pattern)
-   */
-  useEffect(() => {
-    if (!sectionId) return;
-
-    const fetchLessons = async () => {
-      try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/lessons/section/${sectionId}`
-        );
-
-        const data = await res.json();
-        setLessons(data.data || []);
-      } catch {
-        toast.error("Failed to load lessons");
-      }
+  const onSubmit = (data: LessonFormType) => {
+    const newLesson = {
+      _id: `les-${Date.now()}`,
+      title: data.title,
+      videoUrl: data.videoUrl,
+      isPreview: data.isPreview,
     };
-
-    fetchLessons();
-
-    // keep form sectionId in sync
-    reset((prev) => ({
-      ...prev,
-      section: sectionId,
-    }));
-  }, [sectionId, reset]);
-
-  /**
-   * Create lesson
-   */
-  const onSubmit = async (data: LessonFormType) => {
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/lessons/create`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            ...data,
-            section: sectionId,
-            order: lessons.length + 1,
-          }),
-        }
-      );
-
-      if (!res.ok) {
-        toast.error("Failed to add lesson");
-        return;
-      }
-
-      toast.success("Lesson added successfully");
-
-      reset({
-        section: sectionId,
-        title: "",
-        videoUrl: "",
-        order: 0,
-        isPreview: false,
-      });
-
-      // reload lessons
-      const refresh = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/lessons/section/${sectionId}`
-      );
-      const refreshedData = await refresh.json();
-      setLessons(refreshedData.data || []);
-    } catch {
-      toast.error("Something went wrong");
-    }
+    setLessons([...lessons, newLesson]);
+    toast.success("Lesson added successfully (UI Mode)");
+    reset({
+      section: sectionId || "",
+      title: "",
+      videoUrl: "",
+      order: 0,
+      isPreview: false,
+    });
   };
 
   return (
@@ -111,7 +59,7 @@ export default function LessonsPage() {
         <input
           {...register("title")}
           placeholder="Lesson title"
-          className="border p-2 w-full"
+          className="border p-2 w-full rounded"
         />
         {errors.title && (
           <p className="text-red-500 text-sm">{errors.title.message}</p>
@@ -120,7 +68,7 @@ export default function LessonsPage() {
         <input
           {...register("videoUrl")}
           placeholder="Video URL"
-          className="border p-2 w-full"
+          className="border p-2 w-full rounded"
         />
         {errors.videoUrl && (
           <p className="text-red-500 text-sm">{errors.videoUrl.message}</p>
@@ -130,7 +78,7 @@ export default function LessonsPage() {
           type="number"
           {...register("order", { valueAsNumber: true })}
           placeholder="Order"
-          className="border p-2 w-full"
+          className="border p-2 w-full rounded"
         />
         {errors.order && (
           <p className="text-red-500 text-sm">{errors.order.message}</p>
@@ -141,7 +89,7 @@ export default function LessonsPage() {
           Preview Lesson
         </label>
 
-        <button type="submit" className="bg-black text-white p-2 w-full">
+        <button type="submit" className="bg-black text-white p-2 w-full rounded hover:bg-gray-800 cursor-pointer">
           Add Lesson
         </button>
       </form>
@@ -149,10 +97,10 @@ export default function LessonsPage() {
       {/* LESSON LIST */}
       <div className="space-y-2">
         {lessons.map((lesson) => (
-          <div key={lesson._id} className="border p-3">
+          <div key={lesson._id} className="border p-3 rounded bg-white flex justify-between items-center">
             <p className="font-semibold">{lesson.title}</p>
             {lesson.isPreview && (
-              <span className="text-sm text-green-600">Preview</span>
+              <span className="text-sm text-green-600 font-medium">Preview</span>
             )}
           </div>
         ))}
