@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import { Sparkles, BookOpen, Clock, FileText, CheckCircle2, HelpCircle, Check } from "lucide-react";
+import { Sparkles, BookOpen, Clock, FileText, CheckCircle2, HelpCircle, Check, Search, ChevronDown } from "lucide-react";
 import {
   PRESET_SUBJECTS,
   getPresetSubtopics,
@@ -24,11 +24,24 @@ export default function ExamSetup({ onStartExam }: ExamSetupProps) {
   const [questionType, setQuestionType] = useState<QuestionType>("MCQ");
   const [loading, setLoading] = useState(false);
 
+  // Search & Combobox states for Subjects
+  const [subjectQuery, setSubjectQuery] = useState("");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const allSubjects = Object.keys(PRESET_SUBJECTS);
+  const popularSubjects = allSubjects.slice(0, 4);
+
+  const filteredSubjects = allSubjects.filter((sub) =>
+    sub.toLowerCase().includes(subjectQuery.toLowerCase())
+  );
+
   const availableSubtopics = getPresetSubtopics(selectedSubject);
 
   const handleSubjectChange = (subject: string) => {
     setSelectedSubject(subject);
     setSelectedTopics([]);
+    setSubjectQuery("");
+    setIsDropdownOpen(false);
   };
 
   const toggleTopic = (topic: string) => {
@@ -37,6 +50,14 @@ export default function ExamSetup({ onStartExam }: ExamSetupProps) {
     } else {
       setSelectedTopics([...selectedTopics, topic]);
     }
+  };
+
+  const handleSelectAllTopics = () => {
+    setSelectedTopics([...availableSubtopics]);
+  };
+
+  const handleClearAllTopics = () => {
+    setSelectedTopics([]);
   };
 
   const handleStart = () => {
@@ -64,7 +85,7 @@ export default function ExamSetup({ onStartExam }: ExamSetupProps) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto py-8 px-4">
+    <div className="w-full py-4">
       {/* Header */}
       <div className="text-center mb-10">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-cyan-400 text-xs font-bold border border-indigo-200 dark:border-indigo-800/60 mb-3 shadow-xs">
@@ -95,9 +116,9 @@ export default function ExamSetup({ onStartExam }: ExamSetupProps) {
               <button
                 type="button"
                 onClick={() => setMode("PRESET")}
-                className={`py-3 px-4 rounded-xl text-sm font-bold border text-center transition cursor-pointer ${
+                className={`py-2.5 px-4 rounded-md text-xs font-semibold border text-center transition cursor-pointer ${
                   mode === "PRESET"
-                    ? "bg-gradient-to-r from-indigo-600 to-cyan-500 text-white border-transparent shadow-md shadow-indigo-500/20"
+                    ? "bg-indigo-600 text-white border-indigo-600 shadow-xs"
                     : "bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100"
                 }`}
               >
@@ -107,9 +128,9 @@ export default function ExamSetup({ onStartExam }: ExamSetupProps) {
               <button
                 type="button"
                 onClick={() => setMode("CUSTOM")}
-                className={`py-3 px-4 rounded-xl text-sm font-bold border text-center transition cursor-pointer ${
+                className={`py-2.5 px-4 rounded-md text-xs font-semibold border text-center transition cursor-pointer ${
                   mode === "CUSTOM"
-                    ? "bg-gradient-to-r from-indigo-600 to-cyan-500 text-white border-transparent shadow-md shadow-indigo-500/20"
+                    ? "bg-indigo-600 text-white border-indigo-600 shadow-xs"
                     : "bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100"
                 }`}
               >
@@ -119,37 +140,124 @@ export default function ExamSetup({ onStartExam }: ExamSetupProps) {
 
             {/* PRESET MODE CONTENT */}
             {mode === "PRESET" ? (
-              <div className="space-y-5">
-                <div>
-                  <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">
-                    Select Subject
-                  </label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    {Object.keys(PRESET_SUBJECTS).map((sub) => (
-                      <button
-                        key={sub}
-                        type="button"
-                        onClick={() => handleSubjectChange(sub)}
-                        className={`p-3 rounded-xl border text-left text-xs font-bold transition flex items-center justify-between cursor-pointer ${
-                          selectedSubject === sub
-                            ? "bg-indigo-50 dark:bg-indigo-950/60 border-indigo-500 text-indigo-600 dark:text-cyan-400"
-                            : "bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 hover:border-gray-300"
-                        }`}
-                      >
-                        <span>{sub}</span>
-                        {selectedSubject === sub && <Check className="w-4 h-4 text-cyan-500" />}
-                      </button>
-                    ))}
+              <div className="space-y-6">
+                
+                {/* Subject Selector */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-xs font-bold text-gray-700 dark:text-gray-300">
+                      Select Subject ({allSubjects.length} Available)
+                    </label>
+                    <span className="text-[11px] font-semibold text-indigo-600 dark:text-cyan-400">
+                      Current: <strong>{selectedSubject}</strong>
+                    </span>
+                  </div>
+
+                  {/* Popular Subject Quick Pills */}
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <span className="text-[11px] font-semibold text-gray-400 mr-1">Popular:</span>
+                    {popularSubjects.map((sub) => {
+                      const isSelected = selectedSubject === sub;
+                      return (
+                        <button
+                          key={sub}
+                          type="button"
+                          onClick={() => handleSubjectChange(sub)}
+                          className={`px-2.5 py-1 rounded-md text-xs font-semibold border transition cursor-pointer ${
+                            isSelected
+                              ? "bg-indigo-600 text-white border-indigo-600 shadow-xs"
+                              : "bg-gray-50 dark:bg-gray-800/80 border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 hover:border-indigo-300"
+                          }`}
+                        >
+                          {sub}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Searchable Combobox Input & Dropdown */}
+                  <div className="relative">
+                    <div className="relative flex items-center">
+                      <Search className="w-4 h-4 absolute left-3.5 text-gray-400 pointer-events-none" />
+                      <input
+                        type="text"
+                        placeholder="Search or select a subject..."
+                        value={subjectQuery || selectedSubject}
+                        onFocus={() => setIsDropdownOpen(true)}
+                        onChange={(e) => {
+                          setSubjectQuery(e.target.value);
+                          setIsDropdownOpen(true);
+                        }}
+                        className="w-full pl-10 pr-10 py-2.5 text-xs font-semibold rounded-md border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs"
+                      />
+                      <ChevronDown
+                        className="w-4 h-4 absolute right-3.5 text-gray-400 cursor-pointer"
+                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                      />
+                    </div>
+
+                    {/* Dropdown Menu */}
+                    {isDropdownOpen && (
+                      <div className="absolute top-full left-0 right-0 mt-1 z-30 max-h-56 overflow-y-auto bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-md shadow-lg p-1 space-y-0.5">
+                        {filteredSubjects.length > 0 ? (
+                          filteredSubjects.map((sub) => (
+                            <button
+                              key={sub}
+                              type="button"
+                              onClick={() => handleSubjectChange(sub)}
+                              className={`w-full px-3 py-2 text-xs font-semibold rounded-md text-left flex items-center justify-between transition cursor-pointer ${
+                                selectedSubject === sub
+                                  ? "bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-cyan-400 font-bold"
+                                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                              }`}
+                            >
+                              <span>{sub}</span>
+                              {selectedSubject === sub && <Check className="w-3.5 h-3.5 text-indigo-600 dark:text-cyan-400" />}
+                            </button>
+                          ))
+                        ) : (
+                          <div className="p-3 text-center text-xs text-gray-400">
+                            No subjects match "{subjectQuery}"
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
 
                 {/* AI Subtopics Suggester */}
-                <div>
-                  <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2 flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-cyan-500" />
-                    <span>AI Suggested Sub-topics (Select 1 or more)</span>
-                  </label>
-                  <div className="flex flex-wrap gap-2">
+                <div className="pt-2 border-t border-gray-100 dark:border-gray-800">
+                  <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                    <label className="text-xs font-bold text-gray-700 dark:text-gray-300 flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-indigo-600 dark:text-cyan-400" />
+                      <span>AI Suggested Sub-topics</span>
+                      <span className="text-[11px] font-semibold text-gray-400 ml-1">
+                        ({selectedTopics.length} / {availableSubtopics.length} selected)
+                      </span>
+                    </label>
+
+                    {/* Quick Select All / Clear All Buttons */}
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={handleSelectAllTopics}
+                        className="text-[11px] font-semibold text-indigo-600 dark:text-cyan-400 hover:underline cursor-pointer"
+                      >
+                        Select All
+                      </button>
+                      <span className="text-gray-300 dark:text-gray-700">•</span>
+                      <button
+                        type="button"
+                        onClick={handleClearAllTopics}
+                        className="text-[11px] font-semibold text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 cursor-pointer"
+                      >
+                        Clear All
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Multi-Select Pills Container */}
+                  <div className="p-3 bg-gray-50 dark:bg-gray-900/60 border border-gray-200 dark:border-gray-800 rounded-md flex flex-wrap gap-2 max-h-48 overflow-y-auto">
                     {availableSubtopics.map((topic) => {
                       const isSelected = selectedTopics.includes(topic);
                       return (
@@ -157,19 +265,20 @@ export default function ExamSetup({ onStartExam }: ExamSetupProps) {
                           key={topic}
                           type="button"
                           onClick={() => toggleTopic(topic)}
-                          className={`px-3 py-1.5 rounded-full text-xs font-medium border transition cursor-pointer flex items-center gap-1.5 ${
+                          className={`px-3 py-1.5 rounded-md text-xs font-semibold border transition cursor-pointer flex items-center gap-1.5 ${
                             isSelected
-                              ? "bg-cyan-500 text-white border-cyan-500 shadow-xs"
-                              : "bg-gray-100 dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200"
+                              ? "bg-indigo-600 text-white border-indigo-600 shadow-xs"
+                              : "bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 hover:border-indigo-300"
                           }`}
                         >
-                          {isSelected && <Check className="w-3 h-3" />}
+                          {isSelected && <Check className="w-3 h-3 text-white" />}
                           <span>{topic}</span>
                         </button>
                       );
                     })}
                   </div>
                 </div>
+
               </div>
             ) : (
               /* CUSTOM MODE CONTENT */
@@ -292,9 +401,9 @@ export default function ExamSetup({ onStartExam }: ExamSetupProps) {
               type="button"
               onClick={handleStart}
               disabled={loading}
-              className="w-full bg-gradient-to-r from-indigo-600 via-indigo-500 to-cyan-500 hover:from-indigo-700 hover:to-cyan-600 text-white font-bold py-3.5 rounded-xl shadow-md shadow-indigo-500/20 transition cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2 text-sm"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-md shadow-xs transition cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2 text-xs"
             >
-              <Sparkles className="w-4 h-4" />
+              <Sparkles className="w-4 h-4 text-cyan-300" />
               <span>{loading ? "Generating Exam..." : "Start AI Exam"}</span>
             </button>
           </div>

@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import { Box, Plane, Star } from "lucide-react";
+import { MessageSquare, Send, Star, UserCheck } from "lucide-react";
 import { mockReviews, mockUser } from "@/data/mockData";
 import { toast } from "sonner";
 
@@ -14,6 +14,7 @@ interface ReviewSectionProps {
 export default function ReviewSection({ averageRating }: ReviewSectionProps) {
   const [reviews, setReviews] = useState<any[]>(mockReviews);
   const [rating, setRating] = useState(5);
+  const [hoverRating, setHoverRating] = useState(0);
   const [message, setMessage] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -36,16 +37,26 @@ export default function ReviewSection({ averageRating }: ReviewSectionProps) {
     toast.success("Review submitted successfully!");
   };
 
-  const renderStars = (rating: number, interactive = false, onRate?: (r: number) => void) => {
+  const renderStars = (
+    currentRating: number,
+    interactive = false,
+    onRate?: (r: number) => void
+  ) => {
+    const activeRating = interactive && hoverRating > 0 ? hoverRating : currentRating;
+
     return (
-      <div className="flex gap-1">
+      <div className="flex gap-1 items-center">
         {[1, 2, 3, 4, 5].map((star) => (
           <Star
             key={star}
             className={`${
-              star <= rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
-            } ${interactive ? "cursor-pointer hover:text-yellow-400" : ""}`}
-            size={interactive ? 24 : 16}
+              star <= activeRating
+                ? "fill-amber-400 text-amber-400"
+                : "text-gray-300 dark:text-gray-600"
+            } ${interactive ? "cursor-pointer transition-transform hover:scale-110" : ""}`}
+            size={interactive ? 22 : 15}
+            onMouseEnter={() => interactive && setHoverRating(star)}
+            onMouseLeave={() => interactive && setHoverRating(0)}
             onClick={() => interactive && onRate && onRate(star)}
           />
         ))}
@@ -54,79 +65,128 @@ export default function ReviewSection({ averageRating }: ReviewSectionProps) {
   };
 
   return (
-    <div className="tab-content">
-      <div>
-        <h1 className="text-[20px] font-bold">Reviews</h1>
-        <p className="text-sm text-slate-400">
-          Total reviews: {reviews.length} | Rating: {averageRating.toFixed(1)}
-        </p>
+    <div className="space-y-6">
+      {/* Header Stat Summary */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-indigo-50/50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/40 rounded-lg gap-3">
+        <div>
+          <h3 className="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            <MessageSquare className="w-4 h-4 text-indigo-600 dark:text-cyan-400" />
+            <span>Course Reviews & Student Feedback</span>
+          </h3>
+          <p className="text-xs text-gray-600 dark:text-gray-300 mt-1">
+            Read authentic reviews from learners who completed this course
+          </p>
+        </div>
+        <div className="flex items-center gap-3 bg-white dark:bg-gray-900 px-3.5 py-2 rounded-md border border-gray-200 dark:border-gray-800 shrink-0">
+          <div className="text-xl font-extrabold text-indigo-600 dark:text-cyan-400">
+            {averageRating.toFixed(1)}
+          </div>
+          <div>
+            {renderStars(Math.round(averageRating))}
+            <span className="text-[11px] font-semibold text-gray-500 dark:text-gray-400">
+              {reviews.length} Total Reviews
+            </span>
+          </div>
+        </div>
       </div>
 
-      <div className="border mt-6 mb-6"></div>
+      {/* Write a Review Form */}
+      <div
+        id="review-form"
+        className="p-5 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 shadow-xs space-y-4"
+      >
+        <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 pb-3">
+          <h4 className="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
+            <UserCheck className="w-4 h-4 text-indigo-600 dark:text-cyan-400" />
+            <span>Leave a Review</span>
+          </h4>
+          <span className="text-xs text-gray-400">Posting as {mockUser.name}</span>
+        </div>
 
-      {/* Review Form */}
-      <div id="review-form" className="mx-auto p-6 bg-gray-100 dark:bg-black rounded-md shadow-md">
-        <h3 className="text-lg font-semibold mb-4">Add Your Review</h3>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-2">Rating</label>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-1.5">
+            <label className="block text-xs font-bold text-gray-700 dark:text-gray-300">
+              Select Rating
+            </label>
             {renderStars(rating, true, setRating)}
           </div>
 
-          <textarea
-            className="w-full border rounded-md p-3 mb-4 resize-none dark:bg-gray-800 dark:text-white"
-            placeholder="Write your review... (minimum 10 characters)"
-            rows={4}
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            required
-            minLength={10}
-            maxLength={1000}
-          />
+          <div className="space-y-1.5">
+            <label className="block text-xs font-bold text-gray-700 dark:text-gray-300">
+              Your Review Message
+            </label>
+            <textarea
+              className="w-full border border-gray-200 dark:border-gray-800 rounded-md p-3 text-xs bg-gray-50 dark:bg-gray-800/60 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-hidden focus:ring-2 focus:ring-indigo-500 dark:focus:ring-cyan-400 transition"
+              placeholder="Share your thoughts about course content, instructor pacing, and assignments... (minimum 10 characters)"
+              rows={3}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              required
+              minLength={10}
+              maxLength={1000}
+            />
+          </div>
 
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-md flex items-center justify-center gap-2 hover:bg-blue-600 transition cursor-pointer"
+            className="w-full bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-bold text-xs py-2.5 px-4 rounded-md flex items-center justify-center gap-2 transition shadow-xs cursor-pointer"
           >
-            <Plane />
-            Submit Review
+            <Send className="w-3.5 h-3.5" />
+            <span>Submit Course Review</span>
           </button>
         </form>
       </div>
 
       {/* Reviews List */}
-      <div className="mt-6">
-        <h1 className="text-[20px] font-semibold mb-4">All Reviews</h1>
+      <div className="space-y-3">
+        <h4 className="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+          Student Feedback ({reviews.length})
+        </h4>
 
         {reviews.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-64 text-center p-4">
-            <Box className="w-12 h-12 text-gray-500 mb-4" />
-            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">No Reviews Yet</h2>
-            <p className="text-sm text-gray-500">Be the first to share your experience!</p>
+          <div className="flex flex-col items-center justify-center py-10 text-center p-4 bg-gray-50 dark:bg-gray-800/30 rounded-lg border border-dashed border-gray-200 dark:border-gray-800">
+            <MessageSquare className="w-8 h-8 text-gray-400 mb-2" />
+            <h5 className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+              No Reviews Yet
+            </h5>
+            <p className="text-xs text-gray-500 mt-1">Be the first to share your experience!</p>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-3">
             {reviews.map((review) => (
-              <div key={review.id || review._id} className="border rounded-lg p-4 bg-white dark:bg-gray-800">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">
+              <div
+                key={review.id || review._id}
+                className="p-4 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 shadow-xs space-y-2.5"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    {review.user?.avatar ? (
+                      <img
+                        src={review.user.avatar}
+                        alt={review.user?.name || "User"}
+                        className="w-9 h-9 rounded-full object-cover border border-indigo-100 dark:border-indigo-900"
+                      />
+                    ) : (
+                      <div className="w-9 h-9 rounded-full bg-indigo-600 text-white font-bold text-xs flex items-center justify-center">
                         {review.user?.name ? review.user.name.charAt(0).toUpperCase() : "U"}
                       </div>
-                      <div>
-                        <p className="font-semibold">{review.user?.name || "User"}</p>
-                        <div className="flex items-center gap-2">
-                          {renderStars(review.rating)}
-                          <span className="text-xs text-gray-500">
-                            {review.createdAt}
-                          </span>
-                        </div>
+                    )}
+                    <div>
+                      <p className="text-xs font-bold text-gray-900 dark:text-white">
+                        {review.user?.name || "Student"}
+                      </p>
+                      <div className="flex items-center gap-2 mt-0.5">
+                        {renderStars(review.rating)}
+                        <span className="text-[10px] text-gray-400">
+                          {review.createdAt}
+                        </span>
                       </div>
                     </div>
-                    <p className="text-gray-700 dark:text-gray-300 ml-13">{review.message}</p>
                   </div>
                 </div>
+                <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed pl-12">
+                  {review.message}
+                </p>
               </div>
             ))}
           </div>

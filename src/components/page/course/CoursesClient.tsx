@@ -112,10 +112,10 @@ export default function CoursesClient({ courses }: { courses: Course[] }) {
   };
 
   return (
-    <div className="w-full px-4 sm:px-6 lg:px-8">
-      <div className="flex gap-4 lg:gap-6 mt-6 mb-12 lg:mb-24 max-w-7xl mx-auto">
+    <div className="w-full py-4">
+      <div className="flex gap-4 lg:gap-6">
         {/* Desktop Sidebar */}
-        <div className="hidden lg:block w-[290px] flex-shrink-0">
+        <div className="hidden lg:block w-[280px] flex-shrink-0">
           <CourseFilter
             selectedCategories={selectedCategories}
             selectedLanguages={selectedLanguages}
@@ -130,12 +130,12 @@ export default function CoursesClient({ courses }: { courses: Course[] }) {
             <div className="fixed inset-y-0 left-0 w-[280px] bg-white dark:bg-gray-900 overflow-y-auto">
               <div className="p-4">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-xl font-bold">Filters</h2>
+                  <h2 className="text-lg font-bold">Filters</h2>
                   <button
                     onClick={() => setShowMobileFilter(false)}
-                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded"
+                    className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md"
                   >
-                    <X size={24} />
+                    <X size={20} />
                   </button>
                 </div>
                 <CourseFilter
@@ -157,42 +157,41 @@ export default function CoursesClient({ courses }: { courses: Course[] }) {
               {/* Mobile Filter Button */}
               <button
                 onClick={() => setShowMobileFilter(true)}
-                className="lg:hidden p-2 rounded border border-gray-300 hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-800"
+                className="lg:hidden p-2 rounded-md border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800"
               >
-                <Filter size={20} />
+                <Filter size={18} />
               </button>
 
               {/* Layout Toggle */}
-              <div className="flex gap-2">
+              <div className="flex gap-1.5">
                 <button
                   onClick={() => setLayout("grid")}
-                  className={`p-2 rounded transition ${
+                  className={`p-2 rounded-md transition ${
                     layout === "grid"
-                      ? "bg-sky-500 text-white"
-                      : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+                      ? "bg-indigo-600 text-white"
+                      : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
                   }`}
                   aria-label="Grid layout"
                 >
-                  <LayoutGrid size={20} />
+                  <LayoutGrid size={18} />
                 </button>
                 <button
                   onClick={() => setLayout("list")}
-                  className={`p-2 rounded transition ${
+                  className={`p-2 rounded-md transition ${
                     layout === "list"
-                      ? "bg-sky-500 text-white"
-                      : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+                      ? "bg-indigo-600 text-white"
+                      : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
                   }`}
                   aria-label="List layout"
                 >
-                  <LayoutList size={20} />
+                  <LayoutList size={18} />
                 </button>
               </div>
             </div>
 
             {/* Results info */}
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              Showing {paginatedCourses.length} of {filteredCourses.length}{" "}
-              courses
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              Showing {paginatedCourses.length} of {filteredCourses.length} courses
             </p>
           </div>
 
@@ -202,28 +201,28 @@ export default function CoursesClient({ courses }: { courses: Course[] }) {
               {selectedCategories.map((cat) => (
                 <span
                   key={cat}
-                  className="inline-flex items-center gap-1 px-3 py-1 bg-sky-100 dark:bg-sky-900 text-sky-700 dark:text-sky-300 rounded-full text-sm"
+                  className="inline-flex items-center gap-1 px-2.5 py-1 bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-cyan-400 border border-indigo-200 dark:border-indigo-800 rounded-md text-xs font-semibold"
                 >
                   {cat}
                   <button
                     onClick={() => toggleCategory(cat)}
-                    className="hover:text-sky-900 dark:hover:text-sky-100"
+                    className="hover:text-indigo-800 dark:hover:text-cyan-200 cursor-pointer"
                   >
-                    <X size={14} />
+                    <X size={12} />
                   </button>
                 </span>
               ))}
               {selectedLanguages.map((lang) => (
                 <span
                   key={lang}
-                  className="inline-flex items-center gap-1 px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 rounded-full text-sm"
+                  className="inline-flex items-center gap-1 px-2.5 py-1 bg-cyan-50 dark:bg-cyan-950/60 text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800 rounded-md text-xs font-semibold"
                 >
                   {lang}
                   <button
                     onClick={() => toggleLanguage(lang)}
-                    className="hover:text-purple-900 dark:hover:text-purple-100"
+                    className="hover:text-cyan-900 dark:hover:text-cyan-100 cursor-pointer"
                   >
-                    <X size={14} />
+                    <X size={12} />
                   </button>
                 </span>
               ))}
@@ -257,19 +256,19 @@ export default function CoursesClient({ courses }: { courses: Course[] }) {
                   <button
                     onClick={handlePrevious}
                     disabled={currentPage === 1}
-                    className="w-full sm:w-auto px-4 py-2 rounded border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                    className="w-full sm:w-auto px-3.5 py-1.5 rounded-md border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition text-xs font-semibold"
                     aria-label="Previous page"
                   >
-                    <ChevronLeft size={20} className="mx-auto sm:mx-0" />
+                    <ChevronLeft size={16} className="mx-auto sm:mx-0" />
                   </button>
 
-                  {/* Page numbers - Hide some on mobile */}
-                  <div className="flex items-center gap-1 sm:gap-2 overflow-x-auto pb-2 sm:pb-0">
+                  {/* Page numbers */}
+                  <div className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto pb-2 sm:pb-0">
                     {getPageNumbers().map((page, index) =>
                       page === "..." ? (
                         <span
                           key={`ellipsis-${index}`}
-                          className="px-2 sm:px-3 py-2 text-gray-500"
+                          className="px-2 py-1 text-xs text-gray-500"
                         >
                           ...
                         </span>
@@ -277,9 +276,9 @@ export default function CoursesClient({ courses }: { courses: Course[] }) {
                         <button
                           key={page}
                           onClick={() => handlePageChange(page as number)}
-                          className={`min-w-[40px] px-3 sm:px-4 py-2 rounded border transition ${
+                          className={`min-w-[36px] h-9 px-3 text-xs font-semibold rounded-md border transition ${
                             currentPage === page
-                              ? "bg-sky-500 text-white border-sky-500"
+                              ? "bg-indigo-600 text-white border-indigo-600"
                               : "border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800"
                           }`}
                           aria-label={`Page ${page}`}
@@ -295,20 +294,20 @@ export default function CoursesClient({ courses }: { courses: Course[] }) {
                   <button
                     onClick={handleNext}
                     disabled={currentPage === totalPages}
-                    className="w-full sm:w-auto px-4 py-2 rounded border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                    className="w-full sm:w-auto px-3.5 py-1.5 rounded-md border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition text-xs font-semibold"
                     aria-label="Next page"
                   >
-                    <ChevronRight size={20} className="mx-auto sm:mx-0" />
+                    <ChevronRight size={16} className="mx-auto sm:mx-0" />
                   </button>
                 </div>
               )}
             </>
           ) : (
             <div className="text-center py-12 sm:py-20">
-              <p className="text-gray-500 text-lg sm:text-xl">
+              <p className="text-gray-500 text-base font-semibold">
                 No courses found
               </p>
-              <p className="text-gray-400 text-sm mt-2">
+              <p className="text-gray-400 text-xs mt-1">
                 Try adjusting your filters
               </p>
             </div>

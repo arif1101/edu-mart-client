@@ -36,7 +36,7 @@ const mainNavigation = [
   { href: "/", label: "Home" },
   { href: "/courses", label: "Courses" },
   { href: "/exam", label: "AI Exam", badge: "AI" },
-  { href: "/books", label: "E-Books" },
+  { href: "/books", label: "Books" },
   { href: "/mentors", label: "Mentors" },
   { href: "/blogs", label: "Blogs" },
   { href: "/events", label: "Events" },
@@ -146,20 +146,20 @@ export default function NavbarClient({ user }: NavbarClientProps) {
           {/* Right Action Icons & User Account */}
           <div className="flex items-center gap-3">
             {/* AI Exam Button Shortcut */}
-            <Link href="/exam" className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-indigo-600 to-cyan-500 hover:from-indigo-700 hover:to-cyan-600 text-white text-xs font-bold shadow-sm shadow-indigo-500/20 transition cursor-pointer">
-              <Sparkles className="w-3.5 h-3.5 text-yellow-300 animate-pulse" />
+            <Link href="/exam" className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-xs transition cursor-pointer">
+              <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
               <span>AI Exam</span>
             </Link>
 
             {/* Notification Bell */}
-            <button className="hidden sm:flex p-2 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition cursor-pointer">
+            <button className="hidden sm:flex p-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition cursor-pointer">
               <Bell className="w-5 h-5" />
             </button>
 
             {/* Shopping Cart Icon */}
             <Link
               href="/cart"
-              className="relative p-2 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+              className="relative p-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
             >
               <ShoppingCart className="w-5 h-5" />
               {cartItemCount > 0 && (
@@ -171,7 +171,7 @@ export default function NavbarClient({ user }: NavbarClientProps) {
 
             {/* Admin Link */}
             <Link href="/admin" className="hidden lg:inline-block">
-              <span className="px-2.5 py-1 text-xs font-semibold rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-cyan-400 border border-indigo-200 dark:border-indigo-800/60 hover:bg-indigo-100 transition">
+              <span className="px-2.5 py-1 text-xs font-semibold rounded-md bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-cyan-400 border border-indigo-200 dark:border-indigo-800/60 hover:bg-indigo-100 transition">
                 Admin Panel
               </span>
             </Link>
@@ -180,9 +180,9 @@ export default function NavbarClient({ user }: NavbarClientProps) {
             {user ? (
               <div
                 onClick={() => setIsSidebarOpen(true)}
-                className="flex items-center gap-2 p-1 pl-1.5 pr-3 rounded-full border border-gray-200 dark:border-gray-800 hover:border-indigo-300 dark:hover:border-cyan-500/50 bg-gray-50 dark:bg-gray-900 cursor-pointer transition shadow-xs"
+                className="flex items-center gap-2 p-1 pl-1.5 pr-3 rounded-md border border-gray-200 dark:border-gray-800 hover:border-indigo-300 dark:hover:border-cyan-500/50 bg-gray-50 dark:bg-gray-900 cursor-pointer transition shadow-xs"
               >
-                <div className="w-7 h-7 rounded-full bg-gradient-to-r from-indigo-500 to-cyan-500 text-white flex items-center justify-center font-bold text-xs shadow-sm">
+                <div className="w-7 h-7 rounded-md bg-indigo-600 text-white flex items-center justify-center font-bold text-xs shadow-xs">
                   {user.name?.charAt(0)}
                 </div>
                 <span className="text-xs font-semibold text-gray-700 dark:text-gray-200 max-w-[90px] truncate">
@@ -192,12 +192,12 @@ export default function NavbarClient({ user }: NavbarClientProps) {
             ) : (
               <div className="flex items-center gap-2">
                 <Link href="/login">
-                  <Button variant="ghost" size="sm" className="text-xs font-semibold">
+                  <Button variant="ghost" size="sm" className="text-xs font-semibold rounded-md">
                     Sign In
                   </Button>
                 </Link>
                 <Link href="/signup">
-                  <Button size="sm" className="text-xs font-semibold bg-gradient-to-r from-indigo-600 to-cyan-500 hover:from-indigo-700 hover:to-cyan-600 text-white shadow-sm shadow-indigo-500/20">
+                  <Button size="sm" className="text-xs font-semibold rounded-md bg-indigo-600 hover:bg-indigo-700 text-white shadow-xs">
                     Get Started
                   </Button>
                 </Link>
@@ -213,7 +213,7 @@ export default function NavbarClient({ user }: NavbarClientProps) {
             {/* Categories Dropdown Button */}
             <Popover>
               <PopoverTrigger asChild>
-                <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-xs font-bold hover:bg-indigo-700 transition cursor-pointer shrink-0">
+                <button className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-indigo-600 text-white text-xs font-semibold hover:bg-indigo-700 transition cursor-pointer shrink-0">
                   <Grid className="w-3.5 h-3.5" />
                   <span>All Categories</span>
                   <ChevronDown className="w-3 h-3" />

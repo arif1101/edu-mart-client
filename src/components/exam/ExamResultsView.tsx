@@ -32,7 +32,7 @@ export default function ExamResultsView({
   };
 
   return (
-    <div className="max-w-4xl mx-auto py-8 px-4 space-y-8">
+    <div className="w-full py-4 space-y-8">
       
       {/* Top Banner Card */}
       <div className="bg-gradient-to-r from-indigo-900 via-indigo-800 to-slate-900 border border-indigo-700/50 rounded-3xl p-6 md:p-8 text-white shadow-xl relative overflow-hidden">

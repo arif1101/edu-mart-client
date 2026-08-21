@@ -35,51 +35,49 @@ const mentors: Mentor[] = [
 
 export default function MeetMyTeam() {
   return (
-    <div className="mt-25 flex flex-col gap-10">
+    <section className="py-8 md:py-12 flex flex-col gap-8">
       {/* Section Header */}
       <div className="max-w-2xl text-center mx-auto flex flex-col gap-2">
-        <h1 className="text-3xl font-bold lg:text-4xl xl:text-5xl">
-          Meet the <span className="text-sky-500">Mentors</span>
-        </h1>
-        <p className="text-base text-stone-600">
-          Nunc eu hendrerit turpis. Fusce non lectus sem. In pellentesque nunc
-          non pellentesque ultricies. Donec pretium gravida neque et placerat.
-          Aliquam erat volutpat Proin.
+        <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+          Meet Our Expert <span className="text-indigo-600 dark:text-cyan-400">Mentors</span>
+        </h2>
+        <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+          Learn directly from real-world industry leaders with verified expertise and years of experience.
         </p>
       </div>
 
       {/* Mentors Grid */}
-      <div className="flex flex-wrap justify-center gap-6 p-8 bg-[url(https://lms.factoryze.tech/demo-home-page1/dots.svg)] bg-no-repeat">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {mentors.map((mentor, index) => (
-          <div key={index} className="flex flex-col gap-2">
-            <div className="relative w-64.75 h-80 rounded-2xl shadow-lg overflow-hidden group bg-white">
+          <div key={index} className="flex flex-col gap-3 group">
+            <div className="relative h-72 rounded-lg border border-gray-200 dark:border-gray-800 overflow-hidden bg-gray-100 dark:bg-gray-900 shadow-xs">
               {/* Mentor Image */}
               <img
                 src={mentor.image}
                 alt={mentor.name}
-                className="w-full h-full object-cover transition duration-300 ease-in-out group-hover:opacity-50"
+                className="w-full h-full object-cover transition duration-300 group-hover:scale-105"
               />
 
               {/* Overlay & View Button */}
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
-                <button className="bg-sky-500 text-white px-6 py-2 rounded-full shadow-lg text-sm font-semibold hover:bg-sky-600">
-                  View →
+              <div className="absolute inset-0 bg-gray-950/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-xs font-semibold shadow-xs transition cursor-pointer">
+                  View Profile →
                 </button>
               </div>
             </div>
 
             {/* Mentor Name & Role */}
             <div className="text-center">
-              <h3 className="text-2xl font-bold tracking-wide">
+              <h3 className="text-base font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 transition">
                 {mentor.name}
               </h3>
-              <p className="text-base font-normal tracking-wide">
+              <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">
                 {mentor.role}
               </p>
             </div>
           </div>
         ))}
       </div>
-    </div>
-  )
+    </section>
+  );
 }

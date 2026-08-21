@@ -52,7 +52,7 @@ export default function ExamPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50/50 dark:bg-gray-950 pb-16">
+    <div className="w-full">
       {step === "SETUP" && <ExamSetup onStartExam={handleStartExam} />}
 
       {step === "ACTIVE" && config && (

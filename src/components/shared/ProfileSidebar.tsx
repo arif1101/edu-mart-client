@@ -7,6 +7,9 @@ import {
   ShoppingCart,
   User,
   BookOpen,
+  GraduationCap,
+  FileCheck,
+  Book,
   Settings,
 } from "lucide-react";
 
@@ -30,9 +33,11 @@ export default function ProfileSidebar({
 
   const navigation = [
     { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { label: "Cart", href: "/cart", icon: ShoppingCart },
+    { label: "Enrolled Courses", href: "/enrolled", icon: GraduationCap },
+    { label: "AI Exam History", href: "/dashboard/exam-history", icon: FileCheck },
+    { label: "My E-Books", href: "/dashboard/my-books", icon: Book },
+    { label: "Cart & Orders", href: "/cart", icon: ShoppingCart },
     { label: "My Profile", href: "/user-profile", icon: User },
-    { label: "Enrolled Courses", href: "/enrolled", icon: BookOpen },
     { label: "Admin Panel", href: "/admin", icon: Settings },
   ];
 

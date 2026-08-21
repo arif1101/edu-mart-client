@@ -98,7 +98,7 @@ export default function ExamActiveSession({
   const progressPercent = Math.round((answeredCount / questions.length) * 100);
 
   return (
-    <div className="max-w-5xl mx-auto py-6 px-4">
+    <div className="w-full py-4">
       {/* Top Header Bar */}
       <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-4 md:p-6 mb-6 shadow-sm flex flex-wrap items-center justify-between gap-4">
         <div>

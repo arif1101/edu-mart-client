@@ -19,45 +19,44 @@ export default function BookCard({ book }: Props) {
   } = book
 
   const price = copyType === 'Hardcopy' ? hardPrice : softPrice
-  console.log("-----from book card------:", _id, title, author, rating, copyType)
 
   return (
-    <Link href={`/books/${_id}`}>
-      <div className="border max-w-[272px] p-2 rounded-lg">
-        <div className="w-full h-[192px] bg-slate-200 flex items-center justify-center">
+    <Link href={`/books/${_id}`} className="block group">
+      <div className="border border-gray-200 dark:border-gray-800 rounded-lg p-3 bg-white dark:bg-gray-900 shadow-xs hover:border-indigo-500/50 transition">
+        <div className="w-full h-44 bg-gray-100 dark:bg-gray-800 rounded-md flex items-center justify-center p-2 overflow-hidden">
           <img
             src={image}
             alt={title}
-            className="h-full w-[106px] shadow-lg"
+            className="h-full object-contain shadow-xs group-hover:scale-105 transition"
           />
         </div>
 
-        <h1 className="text-base font-semibold mt-3 mb-1">
+        <h3 className="text-sm font-bold text-gray-900 dark:text-white mt-3 mb-1 line-clamp-1 group-hover:text-indigo-600 transition">
           {title}
-        </h1>
+        </h3>
 
-        <p className="text-sm text-gray-500 mb-2">
+        <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
           By {author}
         </p>
 
         <div className="flex justify-between items-center mb-2">
-          <h2 className="text-xl font-bold text-sky-500">
-            TK {price}
-          </h2>
-          <span className="text-sm text-green-600">
+          <span className="text-base font-bold text-indigo-600 dark:text-cyan-400">
+            ৳{price}
+          </span>
+          <span className="text-[11px] font-semibold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-md">
             Stock: {stock}
           </span>
         </div>
 
-        <div className="flex justify-between items-center">
-          <div className="flex gap-1 text-amber-400">
-            {'★'.repeat(Math.floor(rating))}
-            <span className="text-xs text-gray-500 ml-1">
-              ({rating})
+        <div className="flex justify-between items-center text-xs pt-2 border-t border-gray-100 dark:border-gray-800">
+          <div className="flex items-center gap-1 text-amber-400">
+            <span>★</span>
+            <span className="text-xs font-semibold text-gray-600 dark:text-gray-300">
+              {rating}
             </span>
           </div>
 
-          <span className="text-xs font-medium text-sky-500">
+          <span className="text-[11px] font-semibold text-indigo-600 dark:text-cyan-400 bg-indigo-50 dark:bg-indigo-950/60 px-2 py-0.5 rounded-md">
             {copyType}
           </span>
         </div>

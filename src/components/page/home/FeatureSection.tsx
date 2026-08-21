@@ -3,111 +3,82 @@ import React from "react";
 
 export default function FeatureSection() {
   return (
-    <div className="flex mt-25 justify-between">
-      <div className="w-1/2 px-10">
-        <div className="relative bg-[url('https://lms.factoryze.tech/passion/home-1-left-img-resize.jpg')] w-full h-[500px] rounded-lg bg-cover bg-center">
-          {/* 1st Container - Positioned Slightly Outside Right */}
-          <div
-            className="absolute top-[-50px] right-[-50px] w-[150px] h-[150px] rounded-full flex flex-col items-center justify-center bg-sky-500 shadow-lg"
-            // Move more to the right
-          >
-            <h1 className="text-4xl font-bold text-white">900K</h1>
-            <p className="text-lg text-white">Total Student</p>
+    <section className="py-8 md:py-12 flex flex-col lg:flex-row gap-10 items-center justify-between">
+      {/* Left Feature Visual */}
+      <div className="w-full lg:w-1/2 relative">
+        <div className="relative bg-gray-900 w-full h-[360px] md:h-[420px] rounded-lg overflow-hidden border border-gray-800 shadow-sm">
+          <img
+            src="https://lms.factoryze.tech/passion/home-1-left-img-resize.jpg"
+            alt="Feature background"
+            className="w-full h-full object-cover opacity-60"
+          />
+
+          {/* Stat Badge */}
+          <div className="absolute top-4 right-4 bg-indigo-600 text-white p-4 rounded-lg shadow-sm text-center">
+            <h3 className="text-2xl font-bold">900K+</h3>
+            <p className="text-xs font-medium text-indigo-100">Total Students</p>
           </div>
 
-          {/* 2nd Container - Positioned Slightly Outside Right */}
-          <div
-            className="absolute max-w-[456px] flex flex-col gap-4 bg-white p-4 rounded-2xl shadow-lg right-[-60px] bottom-[-40px]"
-            //   style={{ right: '-40px' }} // Move more to the right
-          >
-            <div className="flex justify-between">
-              {/* First Image */}
-              <div className="relative h-[200px] border rounded-xl overflow-hidden">
-                <img
-                  src="/men-1.jpg"
-                  alt="Smiling Man"
-                  className="w-[200px] h-full object-cover rounded-xl"
-                />
-              </div>
-
-              {/* Second Image with Video Icons */}
-              <div className="relative w-[200px] h-[200px]">
-                <video
-                  src='/meeting.mp4'
-                  className="w-full h-full object-cover rounded-xl"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  disablePictureInPicture
-                ></video>
-              </div>
-            </div>
-
-            {/* Discussion Info */}
-            <div className="flex justify-between px-1">
+          {/* Floating Card */}
+          <div className="absolute bottom-4 left-4 right-4 sm:right-auto sm:max-w-xs bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-4 rounded-lg shadow-md space-y-3">
+            <div className="flex items-center gap-3">
+              <img
+                src="/men-1.jpg"
+                alt="Student"
+                className="w-12 h-12 rounded-md object-cover"
+              />
               <div>
-                <h3 className="font-bold text-lg">Online Discussion</h3>
-                <p className="text-gray-500 text-sm">
-                  Amet purus gravida quis blandit
-                </p>
+                <h4 className="text-sm font-bold text-gray-900 dark:text-white">Live Discussion</h4>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Interactive live sessions</p>
               </div>
-              <button className="mt-2 bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700 transition">
-                End Discussion →
-              </button>
             </div>
+            <button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold py-2 rounded-md transition cursor-pointer">
+              Join Discussion →
+            </button>
           </div>
         </div>
       </div>
 
-      <div className="w-1/2 max-w-[568.21px]">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4 md:text-4xl">
-          Igniting A <span className="text-sky-500">Passion That</span> Will
-          Propel You Forward
-        </h2>
-        <p className="text-gray-600 mb-6">
-          Integer venenatis consequat elit. Curabitur eget laoreet nibh. Cras
-          euismod, tellus vitae luctus ultrices, lacus erat sagittis nulla, id
-          ornare velit ligula congue ex. Etiam rhoncus urna ut pulvinar euismod.
-        </p>
-        <div className="grid md:grid-cols-3 gap-6 mb-6">
-          <div className="flex flex-col gap-4">
-            <Headset size={30} className="text-sky-500 mb-3" />
-            <h3 className="text-base font-bold text-sky-500">
-              24/7 Live Support
-            </h3>
-            <p className="text-gray-600 text-sm mt-1">
-              Amet porttitor eget dolor morbi
-            </p>
+      {/* Right Content */}
+      <div className="w-full lg:w-1/2 space-y-6">
+        <div>
+          <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+            Igniting A <span className="text-indigo-600 dark:text-cyan-400">Passion That</span> Will Propel You Forward
+          </h2>
+          <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 leading-relaxed">
+            EduMart provides interactive courses, hands-on assignments, and real-time guidance to turn your learning goals into achievements.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 space-y-2">
+            <Headset className="w-6 h-6 text-indigo-600 dark:text-cyan-400" />
+            <h3 className="text-xs font-bold text-gray-900 dark:text-white">24/7 Live Support</h3>
+            <p className="text-[11px] text-gray-500 dark:text-gray-400">Always here to help you learn</p>
           </div>
 
-          <div className="flex flex-col gap-4">
-            <HeadphoneOff size={30} className="text-sky-500 mb-3" />
-            <h3 className="text-base font-bold text-sky-500">
-              Email Assistance
-            </h3>
-            <p className="text-gray-600 mt-1">
-              Facilisis leo vel fringilla est eleifend.
-            </p>
+          <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 space-y-2">
+            <HeadphoneOff className="w-6 h-6 text-indigo-600 dark:text-cyan-400" />
+            <h3 className="text-xs font-bold text-gray-900 dark:text-white">Direct Guidance</h3>
+            <p className="text-[11px] text-gray-500 dark:text-gray-400">Get quick answers from mentors</p>
           </div>
-          <div className="flex flex-col gap-4">
-            <CalendarCheck size={30} className="text-sky-500 mb-3" />
-            <h3 className="text-base font-bold text-sky-500">
-              Book Your Schedule
-            </h3>
-            <p className="text-gray-600 mt-1">
-              Egestas fringilla phasellus faucibus.
-            </p>
+
+          <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 space-y-2">
+            <CalendarCheck className="w-6 h-6 text-indigo-600 dark:text-cyan-400" />
+            <h3 className="text-xs font-bold text-gray-900 dark:text-white">Flexible Schedule</h3>
+            <p className="text-[11px] text-gray-500 dark:text-gray-400">Learn at your own speed</p>
           </div>
         </div>
-        <button className="h-[48px] bg-sky-500 text-white py-3 px-6 rounded-full text-lg font-semibold shadow-lg hover:bg-sky-600 transition duration-300">
-          Start 30-Day Free Trial →
-        </button>
-        <p className="mt-4 text-black font-semibold">
-          Or <span className="text-lg">$24,525/year</span> with 7-day money-back
-          guarantee
-        </p>
+
+        <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <button className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-md transition shadow-xs cursor-pointer">
+            Start Free Trial →
+          </button>
+          <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">
+            Includes 7-day money-back guarantee
+          </span>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

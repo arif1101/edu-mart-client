@@ -1,5 +1,4 @@
-
-import { BookOpen, Users, Target, Award, Heart, Lightbulb, Sparkles, TrendingUp, Globe, Zap, CheckCircle, ArrowRight, ChevronDown } from 'lucide-react';
+import { BookOpen, Users, Target, Award, Heart, Lightbulb, Sparkles, TrendingUp, Globe, CheckCircle } from 'lucide-react';
 
 export default function AboutPage() {
   const stats = [
@@ -11,22 +10,22 @@ export default function AboutPage() {
 
   const values = [
     {
-      icon: <Target className="w-8 h-8" />,
+      icon: <Target className="w-6 h-6" />,
       title: 'Our Mission',
       description: 'Democratizing education by providing accessible, high-quality learning experiences that empower individuals to achieve their personal and professional goals.'
     },
     {
-      icon: <Lightbulb className="w-8 h-8" />,
+      icon: <Lightbulb className="w-6 h-6" />,
       title: 'Innovation',
       description: 'Leveraging cutting-edge technology and modern pedagogy to create engaging, interactive learning experiences tailored to diverse learning styles.'
     },
     {
-      icon: <Heart className="w-8 h-8" />,
+      icon: <Heart className="w-6 h-6" />,
       title: 'Community',
       description: 'Fostering a supportive global community where learners, instructors, and mentors collaborate and inspire each other to reach new heights.'
     },
     {
-      icon: <Globe className="w-8 h-8" />,
+      icon: <Globe className="w-6 h-6" />,
       title: 'Global Reach',
       description: 'Breaking geographical barriers to deliver world-class education to every corner of the planet, making learning truly borderless.'
     }
@@ -77,211 +76,144 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="w-full space-y-12">
       {/* Header Section */}
-      <section className="relative pt-32 pb-16 px-6 bg-gradient-to-b from-sky-50 to-white">
-        <div className="max-w-6xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-5 py-2 bg-sky-100 border border-sky-200 text-sky-600 rounded-full text-sm font-medium mb-8">
-            <Sparkles className="w-4 h-4" />
-            About EduMart
-          </div>
-          <h1 className="text-5xl md:text-6xl font-bold text-slate-900 mb-6 leading-tight">
-            Empowering Learners
-            <span className="block bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent mt-2">
-              Around the World
-            </span>
-          </h1>
-          <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-            EduMart is more than just an online learning platform—we&apos;re a movement dedicated to making quality education accessible, affordable, and transformative for everyone.
-          </p>
+      <section className="py-8 md:py-12 text-center">
+        <div className="inline-flex items-center gap-2 px-3 py-1 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-cyan-400 rounded-md text-xs font-semibold mb-4 shadow-xs">
+          <Sparkles className="w-3.5 h-3.5" />
+          About EduMart
         </div>
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white tracking-tight mb-4">
+          Empowering Learners <span className="text-indigo-600 dark:text-cyan-400">Around the World</span>
+        </h1>
+        <p className="text-sm md:text-base text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
+          EduMart is dedicated to making quality education accessible, affordable, and transformative for everyone.
+        </p>
       </section>
 
       {/* Stats Grid */}
-      <section className="relative py-12 px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {stats.map((stat, index) => (
-              <div key={index} className="relative group">
-                <div className="bg-gradient-to-br from-sky-50 to-blue-50 border border-sky-100 rounded-2xl p-6 hover:border-sky-300 hover:shadow-lg transition-all text-center">
-                  <div className="text-sky-500 mb-3 flex justify-center">{stat.icon}</div>
-                  <div className="text-4xl font-bold text-sky-600 mb-1">
-                    {stat.number}
-                  </div>
-                  <div className="text-slate-600 text-sm font-medium">{stat.label}</div>
-                </div>
+      <section className="py-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          {stats.map((stat, index) => (
+            <div key={index} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-5 text-center shadow-xs hover:border-indigo-500/50 transition">
+              <div className="text-indigo-600 dark:text-cyan-400 mb-2 flex justify-center">{stat.icon}</div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-white mb-0.5">
+                {stat.number}
               </div>
-            ))}
-          </div>
+              <div className="text-gray-500 dark:text-gray-400 text-xs font-medium">{stat.label}</div>
+            </div>
+          ))}
         </div>
       </section>
 
       {/* Story Section */}
-      <section className="relative py-20 px-6 bg-slate-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-4xl font-bold text-slate-900 mb-6">Our Story</h2>
-              <div className="space-y-4 text-slate-600 leading-relaxed">
-                <p>
-                  Founded in 2020, EduMart was born from a simple yet powerful idea: education should be a right, not a privilege. Our founders, a group of passionate educators and technologists, recognized the gaps in traditional education systems and set out to create something different.
-                </p>
-                <p>
-                  What started as a small platform with just 10 courses has grown into a comprehensive learning ecosystem serving over 50,000 students across 120+ countries. We&apos;ve partnered with industry experts, prestigious universities, and leading companies to bring you courses that truly matter.
-                </p>
-                <p>
-                  Today, EduMart stands at the forefront of online education, combining innovative technology with proven teaching methodologies. Every course is designed with care, every instructor is vetted for excellence, and every student success story motivates us to do even better.
-                </p>
-              </div>
+      <section className="py-8 md:py-12 border-t border-gray-100 dark:border-gray-800">
+        <div className="grid lg:grid-cols-2 gap-8 items-center">
+          <div className="space-y-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">Our Story</h2>
+            <div className="space-y-3 text-xs md:text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+              <p>
+                Founded in 2020, EduMart was born from a simple idea: education should be accessible, empowering, and practical.
+              </p>
+              <p>
+                What started with 10 courses has grown into a comprehensive learning ecosystem serving over 50,000 students across 120+ countries.
+              </p>
+              <p>
+                Every course is designed with care, every instructor is vetted for excellence, and every student success story motivates us forward.
+              </p>
             </div>
-            
-            <div className="relative">
-              <div className="bg-white border border-slate-200 rounded-3xl p-8 shadow-lg">
-                <h3 className="text-2xl font-bold text-slate-900 mb-6">What Sets Us Apart</h3>
-                <div className="space-y-4">
-                  {features.map((feature, index) => (
-                    <div key={index} className="flex items-center gap-3">
-                      <CheckCircle className="w-5 h-5 text-sky-500 flex-shrink-0" />
-                      <span className="text-slate-700">{feature}</span>
-                    </div>
-                  ))}
+          </div>
+          
+          <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6 shadow-xs">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">What Sets Us Apart</h3>
+            <div className="space-y-3">
+              {features.map((feature, index) => (
+                <div key={index} className="flex items-center gap-2.5">
+                  <CheckCircle className="w-4 h-4 text-indigo-600 dark:text-cyan-400 shrink-0" />
+                  <span className="text-xs text-gray-700 dark:text-gray-200 font-medium">{feature}</span>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
       {/* Values Section */}
-      <section className="relative py-20 px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">
-              Our Core Values
-            </h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              These principles guide every decision we make and shape the culture of our platform.
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 gap-6">
-            {values.map((value, index) => (
-              <div key={index} className="bg-gradient-to-br from-sky-50 to-blue-50 border border-sky-100 rounded-2xl p-8 hover:border-sky-300 hover:shadow-lg transition-all h-full">
-                <div className="w-14 h-14 bg-gradient-to-br from-sky-500 to-blue-600 rounded-xl flex items-center justify-center text-white mb-5">
-                  {value.icon}
-                </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-3">
-                  {value.title}
-                </h3>
-                <p className="text-slate-600 leading-relaxed">
-                  {value.description}
-                </p>
+      <section className="py-8 md:py-12 border-t border-gray-100 dark:border-gray-800">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+            Our Core Values
+          </h2>
+          <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1 max-w-xl mx-auto">
+            These principles guide every decision we make and shape our platform.
+          </p>
+        </div>
+        
+        <div className="grid md:grid-cols-2 gap-6">
+          {values.map((value, index) => (
+            <div key={index} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6 shadow-xs hover:border-indigo-500/50 transition">
+              <div className="w-10 h-10 bg-indigo-50 dark:bg-indigo-950/60 rounded-md flex items-center justify-center text-indigo-600 dark:text-cyan-400 mb-3">
+                {value.icon}
               </div>
-            ))}
-          </div>
+              <h3 className="text-base font-bold text-gray-900 dark:text-white mb-1.5">
+                {value.title}
+              </h3>
+              <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
+                {value.description}
+              </p>
+            </div>
+          ))}
         </div>
       </section>
 
       {/* Timeline Section */}
-      <section className="relative py-20 px-6 bg-slate-50">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">
-              Our Journey
-            </h2>
-            <p className="text-lg text-slate-600">
-              Key milestones that shaped EduMart into what it is today.
-            </p>
-          </div>
-          
-          <div className="space-y-8">
-            {milestones.map((milestone, index) => (
-              <div key={index} className="relative pl-8 pb-8 border-l-2 border-sky-300 last:border-0 last:pb-0">
-                <div className="absolute left-0 top-0 w-4 h-4 bg-sky-500 rounded-full -translate-x-[9px] ring-4 ring-slate-50"></div>
-                <div className="bg-white border border-slate-200 rounded-xl p-6 hover:border-sky-300 hover:shadow-md transition-all ml-4">
-                  <div className="flex items-center gap-4 mb-2">
-                    <span className="text-2xl font-bold text-sky-500">{milestone.year}</span>
-                    <h3 className="text-xl font-bold text-slate-900">{milestone.event}</h3>
-                  </div>
-                  <p className="text-slate-600">{milestone.description}</p>
+      <section className="py-8 md:py-12 border-t border-gray-100 dark:border-gray-800">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+            Our Journey
+          </h2>
+        </div>
+        
+        <div className="space-y-4 max-w-2xl mx-auto">
+          {milestones.map((milestone, index) => (
+            <div key={index} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-4 shadow-xs flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <span className="text-sm font-bold text-indigo-600 dark:text-cyan-400">{milestone.year}</span>
+                <div>
+                  <h3 className="text-xs font-bold text-gray-900 dark:text-white">{milestone.event}</h3>
+                  <p className="text-[11px] text-gray-500 dark:text-gray-400">{milestone.description}</p>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </section>
 
       {/* Team Section */}
-      <section className="relative py-20 px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">
-              Meet Our Leadership
-            </h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Experienced professionals passionate about transforming education for the digital age.
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {team.map((member, index) => (
-              <div key={index} className="bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-sky-300 hover:shadow-lg transition-all">
-                <div className="aspect-square overflow-hidden">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
-                  />
-                </div>
-                <div className="p-5">
-                  <h3 className="text-lg font-bold text-slate-900 mb-1">{member.name}</h3>
-                  <p className="text-sky-500 text-sm font-medium mb-2">{member.role}</p>
-                  <p className="text-slate-600 text-sm">{member.bio}</p>
-                </div>
+      <section className="py-8 md:py-12 border-t border-gray-100 dark:border-gray-800">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+            Meet Our Leadership
+          </h2>
+        </div>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {team.map((member, index) => (
+            <div key={index} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden shadow-xs">
+              <div className="h-48 overflow-hidden">
+                <img
+                  src={member.image}
+                  alt={member.name}
+                  className="w-full h-full object-cover"
+                />
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="relative py-20 px-6 bg-slate-50">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-lg text-slate-600">
-              Everything you need to know about EduMart. Can&apos;t find the answer you&apos;re looking for? Contact our support team.
-            </p>
-          </div>
-          
-          
-          <div className="mt-12 text-center">
-            <p className="text-slate-600 mb-4">Still have questions?</p>
-            <button className="inline-flex items-center gap-2 px-6 py-3 bg-sky-500 text-white rounded-xl font-semibold hover:bg-sky-600 transition-all shadow-md hover:shadow-lg">
-              Contact Support
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="relative py-20 px-6 bg-gradient-to-r from-sky-500 to-blue-600">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Ready to Start Your Learning Journey?
-            </h2>
-            <p className="text-lg text-sky-50 mb-8 max-w-2xl mx-auto">
-              Join thousands of students already transforming their careers and achieving their goals with EduMart.
-            </p>
-            <button className="inline-flex items-center gap-2 px-8 py-4 bg-white text-sky-600 rounded-xl font-bold hover:bg-slate-100 transition-all transform hover:scale-105 shadow-2xl">
-              Browse Courses
-              <ArrowRight className="w-5 h-5" />
-            </button>
-          </div>
+              <div className="p-4 space-y-1">
+                <h3 className="text-sm font-bold text-gray-900 dark:text-white">{member.name}</h3>
+                <p className="text-xs font-semibold text-indigo-600 dark:text-cyan-400">{member.role}</p>
+                <p className="text-[11px] text-gray-500 dark:text-gray-400">{member.bio}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
     </div>

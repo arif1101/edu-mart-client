@@ -10,7 +10,7 @@ import { mockCourses, mockBooks } from "@/data/mockData";
 
 export default function Home() {
   return (
-    <div className="container mx-auto">
+    <div className="space-y-8 md:space-y-12">
       <Hero />
       <FindCourseForm />
       <PopularTopics />

@@ -1,41 +1,43 @@
+"use client";
+
 export default function FindCourseForm() {
   return (
-    <div>
-      {/* start find course */}
-      <div className="w-full bg-sky-500 px-8 py-12 grid grid-cols-1 md:grid-cols-2 gap-6 mt-25 rounded-lg">
-        <div className="dark:text-white p-8 max-w-137.75 flex flex-col gap-3 md:gap-8">
-          <h1 className="text-2xl font-bold">Find Your Course</h1>
-          <p className="text-base">
-            Suspendisse id ullamcorper leo. Nam consequat arcu a lorem conllis,
-            ultricies tristique elit bibendum. Maesenas fermentum.
+    <div className="w-full bg-indigo-600 dark:bg-indigo-950 p-6 md:p-10 my-8 md:my-12 rounded-lg text-white shadow-sm">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+        <div className="space-y-3">
+          <h2 className="text-2xl md:text-3xl font-bold tracking-tight">Find Your Course</h2>
+          <p className="text-sm md:text-base text-indigo-100 dark:text-gray-300 leading-relaxed">
+            Fill out the form below and our learning advisor will recommend the perfect learning path tailored for you.
           </p>
         </div>
 
-        <form className="max-w-137.75 w-full grid grid-cols-1 md:grid-cols-2 md:gap-3 items-center dark:text-white">
+        <form className="grid grid-cols-1 sm:grid-cols-2 gap-3" onSubmit={(e) => e.preventDefault()}>
           <input
             type="text"
             placeholder="Full Name"
-            className="rounded-full w-67.4 h-11 p-2 pl-5 border dark:border-white dark:text-white"
+            className="w-full h-10 px-4 text-sm rounded-md bg-white/10 dark:bg-gray-900/50 border border-white/20 dark:border-gray-800 text-white placeholder:text-indigo-200 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-white"
           />
 
           <input
             type="email"
-            placeholder="Email"
-            className="rounded-full w-67.4 h-11 p-2 pl-5 border dark:border-white dark:text-white"
+            placeholder="Email Address"
+            className="w-full h-10 px-4 text-sm rounded-md bg-white/10 dark:bg-gray-900/50 border border-white/20 dark:border-gray-800 text-white placeholder:text-indigo-200 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-white"
           />
 
           <input
             type="text"
-            placeholder="Course Name"
-            className="rounded-full w-67.4 h-11 p-2 pl-5 border dark:border-white dark:text-white"
+            placeholder="Interested Topic / Course"
+            className="w-full h-10 px-4 text-sm rounded-md bg-white/10 dark:bg-gray-900/50 border border-white/20 dark:border-gray-800 text-white placeholder:text-indigo-200 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-white"
           />
 
-          <button className="rounded-full w-67.4 h-11 bg-blue-900 text-white pl-5">
-            Submit
+          <button
+            type="submit"
+            className="w-full h-10 bg-gray-950 hover:bg-gray-900 text-white text-sm font-semibold rounded-md transition cursor-pointer"
+          >
+            Submit Request
           </button>
         </form>
       </div>
-      {/* end find course */}
     </div>
   );
 }
